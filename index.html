@@ -217,6 +217,12 @@
       font-size: 12px; color: #c00;
       margin-top: 0.75rem; min-height: 18px;
     }
+
+    /* ===== ローディング ===== */
+    .loading {
+      text-align: center; color: #aaa;
+      padding: 2rem; font-size: 14px;
+    }
   </style>
 </head>
 <body>
@@ -247,28 +253,24 @@
     <!-- ========== 画面①：新規登録 / 編集 ========== -->
     <div class="screen active" id="screen-register">
 
-      <!-- 編集中バナー -->
       <div class="edit-banner" id="edit-banner">
         ✏️ 編集モード：内容を修正して「更新する」を押してください
       </div>
 
       <p class="note">※ 黄色の欄が入力箇所です</p>
 
-      <!-- 製品名 -->
       <div class="section">
         <h2>製品名 / 作業全体の名称</h2>
         <div class="label">製品名（必須）</div>
         <input type="text" id="product-name" placeholder="例: ○○製品 製造工程">
       </div>
 
-      <!-- 基本設定 -->
       <div class="section">
         <h2>基本設定</h2>
         <div class="label">原料名</div>
         <div style="margin-bottom:0.75rem;">
           <input type="text" id="material-name" placeholder="例: ○○原料">
         </div>
-        <!-- 【入力】基本原料数（投入量 = 歩留まり計算の基準） -->
         <div class="label">基本原料数（投入量）</div>
         <div class="input-row">
           <input type="number" id="base-qty" min="0" step="0.1" placeholder="例: 100" oninput="calc()">
@@ -276,7 +278,6 @@
         </div>
       </div>
 
-      <!-- 作業工程 -->
       <div class="section">
         <h2>作業工程（最大6工程）</h2>
         <div id="processes"></div>
@@ -288,20 +289,14 @@
         </div>
       </div>
 
-      <!-- ===== 完成品・歩留まりセクション ===== -->
       <div class="section">
         <h2>完成品 と 歩留まり</h2>
         <p style="font-size:12px;color:#888;margin-bottom:1rem;">
           各工程を経て得られた完成品を入力すると、歩留まりが自動計算されます
         </p>
-
-        <!-- 完成品ブロックがここに追加される -->
         <div id="finished-products"></div>
         <button class="btn-add" onclick="addFinishedProduct()" id="add-fp-btn">＋ 完成品を追加</button>
-
         <hr class="divider">
-
-        <!-- 歩留まり自動計算 -->
         <div class="yield-box">
           <div class="yield-row">
             <div class="yield-item">
@@ -324,24 +319,21 @@
         </div>
       </div>
 
-      <!-- 登録ボタン（新規 or 更新） -->
       <div id="form-buttons">
         <button class="btn-register" onclick="registerProduct()">この内容を登録する</button>
       </div>
 
     </div><!-- /screen-register -->
 
-
     <!-- ========== 画面②：原価台帳 ========== -->
     <div class="screen" id="screen-ledger">
       <h2 style="margin-bottom:1rem;">原価台帳</h2>
       <div id="ledger-list">
-        <div class="ledger-empty">まだ登録されていません</div>
+        <div class="loading">読み込み中...</div>
       </div>
     </div>
 
   </div><!-- /content -->
-
 
   <!-- ===== 詳細モーダル ===== -->
   <div class="modal-overlay" id="modal-overlay" onclick="closeModal(event)">
@@ -357,11 +349,30 @@
   <!-- ===== トースト ===== -->
   <div class="toast" id="toast"></div>
 
-  <script>
-    // ===== パスワード認証 =====
-    const CORRECT_PASSWORD = 'sk4009'; // ← ここを変更してください
+  <!-- ===== Firebase SDK ===== -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+    import { getFirestore, collection, addDoc, getDocs, doc, updateDoc, deleteDoc, query, orderBy }
+      from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
-    function checkPassword() {
+    // ===== Firebase設定 =====
+    const firebaseConfig = {
+      apiKey: "AIzaSyANwaKngLi4_zi4eyOljYmd7hHfH7SiEXk",
+      authDomain: "cost-break-analysis.firebaseapp.com",
+      projectId: "cost-break-analysis",
+      storageBucket: "cost-break-analysis.firebasestorage.app",
+      messagingSenderId: "237201939209",
+      appId: "1:237201939209:web:c0c1709ae4b9603f5dd1d8"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db  = getFirestore(app);
+    const COL = 'costbreak';
+
+    // ===== パスワード認証 =====
+    const CORRECT_PASSWORD = '1234';
+
+    window.checkPassword = function() {
       const input = document.getElementById('pw-input').value;
       if (input === CORRECT_PASSWORD) {
         document.getElementById('pw-overlay').classList.add('hidden');
@@ -371,9 +382,8 @@
         document.getElementById('pw-input').value = '';
         document.getElementById('pw-input').focus();
       }
-    }
+    };
 
-    // セッション中は再入力不要
     if (sessionStorage.getItem('cba-auth') === '1') {
       document.getElementById('pw-overlay').classList.add('hidden');
     }
@@ -381,19 +391,19 @@
     // ===== 状態管理 =====
     let processCount = 0;
     let fpCount = 0;
-    let editingId = null; // 編集中の登録ID（nullなら新規）
+    let editingId = null;
 
     // ===== タブ切り替え =====
-    function showScreen(name, btn) {
+    window.showScreen = function(name, btn) {
       document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
       document.getElementById('screen-' + name).classList.add('active');
       document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
       if (name === 'ledger') renderLedger();
-    }
+    };
 
     // ===== 工程追加 =====
-    function addProcess() {
+    window.addProcess = function() {
       if (processCount >= 6) return;
       processCount++;
       const id = processCount;
@@ -427,23 +437,22 @@
         </div>
         <div class="cost-display">
           この工程の生産コスト：<span class="cost-value" id="cost-${id}">—</span>
-        </div>
-      `;
+        </div>`;
       document.getElementById('processes').appendChild(div);
       if (processCount >= 6) document.getElementById('add-btn').disabled = true;
       calc();
-    }
+    };
 
     // ===== 工程削除 =====
-    function removeProcess(id) {
+    window.removeProcess = function(id) {
       document.getElementById('process-' + id)?.remove();
       processCount = document.querySelectorAll('.process-block').length;
       document.getElementById('add-btn').disabled = false;
       calc();
-    }
+    };
 
     // ===== 完成品追加 =====
-    function addFinishedProduct() {
+    window.addFinishedProduct = function() {
       fpCount++;
       const id = fpCount;
       const div = document.createElement('div');
@@ -454,30 +463,27 @@
           <span>完成品 ${id}</span>
           <button class="btn-remove" onclick="removeFinishedProduct(${id})">削除</button>
         </div>
-        <!-- 【入力】完成品名 -->
         <div class="label">完成品名</div>
         <div style="margin-bottom:0.75rem;">
           <input type="text" id="fp-name-${id}" placeholder="例: ○○製品A">
         </div>
-        <!-- 【入力】完成品量 -->
         <div class="label">完成品量</div>
         <div class="input-row">
           <input type="number" id="fp-qty-${id}" min="0" step="0.1" placeholder="例: 50" oninput="calcYield()">
           <span class="unit">kg</span>
-        </div>
-      `;
+        </div>`;
       document.getElementById('finished-products').appendChild(div);
       calcYield();
-    }
+    };
 
     // ===== 完成品削除 =====
-    function removeFinishedProduct(id) {
+    window.removeFinishedProduct = function(id) {
       document.getElementById('fp-' + id)?.remove();
       calcYield();
-    }
+    };
 
-    // ===== コスト計算（作業者数 × 作業時間 × 基本賃金 ÷ 基本原料数） =====
-    function calc() {
+    // ===== コスト計算 =====
+    window.calc = function() {
       const baseQty = parseFloat(document.getElementById('base-qty').value);
       let total = 0;
       document.querySelectorAll('.process-block').forEach(block => {
@@ -497,10 +503,10 @@
       document.getElementById('total').textContent = total > 0 ? total.toFixed(2) + ' 円/kg' : '— 円/kg';
       calcYield();
       return total;
-    }
+    };
 
     // ===== 歩留まり計算 =====
-    function calcYield() {
+    window.calcYield = function() {
       const baseQty = parseFloat(document.getElementById('base-qty').value) || 0;
       let outputTotal = 0;
       document.querySelectorAll('.product-block').forEach(block => {
@@ -508,10 +514,8 @@
         const qty = parseFloat(document.getElementById('fp-qty-' + id)?.value) || 0;
         outputTotal += qty;
       });
-
       document.getElementById('yield-input').textContent  = baseQty > 0 ? baseQty.toFixed(1) + ' kg' : '—';
       document.getElementById('yield-output').textContent = outputTotal > 0 ? outputTotal.toFixed(1) + ' kg' : '—';
-
       if (baseQty > 0 && outputTotal > 0) {
         const loss = baseQty - outputTotal;
         const rate = (outputTotal / baseQty) * 100;
@@ -521,9 +525,9 @@
         document.getElementById('yield-loss').textContent = '—';
         document.getElementById('yield-rate').textContent = '—';
       }
-    }
+    };
 
-    // ===== 完成品データ収集 =====
+    // ===== データ収集 =====
     function collectFinishedProducts() {
       const fps = [];
       document.querySelectorAll('.product-block').forEach(block => {
@@ -536,7 +540,6 @@
       return fps;
     }
 
-    // ===== 工程データ収集 =====
     function collectProcesses() {
       const processes = [];
       document.querySelectorAll('.process-block').forEach(block => {
@@ -551,8 +554,8 @@
       return processes;
     }
 
-    // ===== 登録（新規） =====
-    function registerProduct() {
+    // ===== 登録（Firestore） =====
+    window.registerProduct = async function() {
       const productName = document.getElementById('product-name').value.trim();
       if (!productName) { alert('製品名を入力してください'); return; }
       const baseQty = parseFloat(document.getElementById('base-qty').value);
@@ -563,7 +566,6 @@
       const yieldRate = baseQty > 0 && outputTotal > 0 ? (outputTotal / baseQty) * 100 : null;
 
       const data = {
-        id: Date.now(),
         productName,
         materialName: document.getElementById('material-name').value,
         baseQty,
@@ -576,15 +578,17 @@
         updatedAt: null,
       };
 
-      const existing = JSON.parse(localStorage.getItem('costbreak-data') || '[]');
-      existing.push(data);
-      localStorage.setItem('costbreak-data', JSON.stringify(existing));
-      showToast('「' + productName + '」を登録しました！');
-      resetForm();
-    }
+      try {
+        await addDoc(collection(db, COL), data);
+        showToast('「' + productName + '」を登録しました！');
+        resetForm();
+      } catch(e) {
+        alert('登録に失敗しました: ' + e.message);
+      }
+    };
 
-    // ===== 更新（編集後） =====
-    function updateProduct() {
+    // ===== 更新（Firestore） =====
+    window.updateProduct = async function() {
       const productName = document.getElementById('product-name').value.trim();
       if (!productName) { alert('製品名を入力してください'); return; }
       const baseQty = parseFloat(document.getElementById('base-qty').value);
@@ -594,12 +598,7 @@
       const outputTotal = fps.reduce((s, f) => s + f.qty, 0);
       const yieldRate = baseQty > 0 && outputTotal > 0 ? (outputTotal / baseQty) * 100 : null;
 
-      let existing = JSON.parse(localStorage.getItem('costbreak-data') || '[]');
-      const idx = existing.findIndex(d => d.id === editingId);
-      if (idx === -1) { alert('更新対象が見つかりません'); return; }
-
-      existing[idx] = {
-        ...existing[idx],
+      const data = {
         productName,
         materialName: document.getElementById('material-name').value,
         baseQty,
@@ -611,36 +610,33 @@
         updatedAt: new Date().toLocaleString('ja-JP'),
       };
 
-      localStorage.setItem('costbreak-data', JSON.stringify(existing));
-      showToast('「' + productName + '」を更新しました！');
-      resetForm();
-    }
+      try {
+        await updateDoc(doc(db, COL, editingId), data);
+        showToast('「' + productName + '」を更新しました！');
+        resetForm();
+      } catch(e) {
+        alert('更新に失敗しました: ' + e.message);
+      }
+    };
 
-    // ===== 編集モードに切り替え =====
-    function editItem(id) {
-      const data = JSON.parse(localStorage.getItem('costbreak-data') || '[]');
-      const item = data.find(d => d.id === id);
-      if (!item) return;
-
-      // 登録画面に切り替え
+    // ===== 編集モード =====
+    window.editItem = function(id, itemData) {
       document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
       document.getElementById('screen-register').classList.add('active');
       document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
       document.querySelectorAll('.tab-btn')[0].classList.add('active');
 
-      // フォームリセット後に値をセット
       resetForm(false);
       editingId = id;
 
-      document.getElementById('product-name').value  = item.productName;
-      document.getElementById('material-name').value = item.materialName || '';
-      document.getElementById('base-qty').value       = item.baseQty;
+      document.getElementById('product-name').value  = itemData.productName;
+      document.getElementById('material-name').value = itemData.materialName || '';
+      document.getElementById('base-qty').value       = itemData.baseQty;
 
-      // 工程を復元
       document.getElementById('processes').innerHTML = '';
       processCount = 0;
       document.getElementById('add-btn').disabled = false;
-      item.processes.forEach(p => {
+      itemData.processes.forEach(p => {
         addProcess();
         const pid = processCount;
         document.getElementById('process-name-' + pid).value = p.name;
@@ -650,10 +646,9 @@
         document.getElementById('wage-'    + pid).value = p.wage;
       });
 
-      // 完成品を復元
       document.getElementById('finished-products').innerHTML = '';
       fpCount = 0;
-      (item.finishedProducts || []).forEach(fp => {
+      (itemData.finishedProducts || []).forEach(fp => {
         addFinishedProduct();
         const fid = fpCount;
         document.getElementById('fp-name-' + fid).value = fp.name;
@@ -663,21 +658,17 @@
       calc();
       calcYield();
 
-      // 編集バナーとボタン切り替え
       document.getElementById('edit-banner').classList.add('show');
       document.getElementById('form-buttons').innerHTML = `
         <button class="btn-update" onclick="updateProduct()">✏️ 更新する</button>
         <button class="btn-cancel" onclick="cancelEdit()">キャンセル</button>
       `;
-    }
+    };
 
-    // ===== 編集キャンセル =====
-    function cancelEdit() {
-      resetForm();
-    }
+    window.cancelEdit = function() { resetForm(); };
 
     // ===== フォームリセット =====
-    function resetForm(resetEditId = true) {
+    window.resetForm = function(resetEditId = true) {
       document.getElementById('product-name').value  = '';
       document.getElementById('material-name').value = '';
       document.getElementById('base-qty').value      = '';
@@ -696,42 +687,52 @@
         `<button class="btn-register" onclick="registerProduct()">この内容を登録する</button>`;
       if (resetEditId) editingId = null;
       addProcess();
-    }
+    };
 
-    // ===== 台帳描画 =====
-    function renderLedger() {
+    // ===== 台帳描画（Firestore） =====
+    window.renderLedger = async function() {
       const list = document.getElementById('ledger-list');
-      const data = JSON.parse(localStorage.getItem('costbreak-data') || '[]');
-      if (data.length === 0) {
-        list.innerHTML = '<div class="ledger-empty">まだ登録されていません</div>';
-        return;
+      list.innerHTML = '<div class="loading">読み込み中...</div>';
+      try {
+        const q = query(collection(db, COL), orderBy('registeredAt', 'desc'));
+        const snap = await getDocs(q);
+        if (snap.empty) {
+          list.innerHTML = '<div class="ledger-empty">まだ登録されていません</div>';
+          return;
+        }
+        list.innerHTML = snap.docs.map(d => {
+          const item = d.data();
+          const id   = d.id;
+          const yieldStr   = item.yieldRate != null ? '歩留まり：' + item.yieldRate.toFixed(1) + '%' : '';
+          const updatedStr = item.updatedAt ? '　更新：' + item.updatedAt : '';
+          const itemJson   = encodeURIComponent(JSON.stringify(item));
+          return `
+            <div class="ledger-item">
+              <div class="ledger-item-left">
+                <div class="ledger-product-name">${item.productName}</div>
+                <div class="ledger-meta">原料：${item.materialName || '—'} ／ 投入：${item.baseQty}kg</div>
+                <div class="ledger-cost">${item.totalCost.toFixed(2)} 円/kg</div>
+                ${yieldStr ? '<div class="ledger-yield">' + yieldStr + '</div>' : ''}
+                <div class="ledger-date">登録：${item.registeredAt}${updatedStr}</div>
+              </div>
+              <div class="ledger-item-right">
+                <button class="btn-view"      onclick="viewDetail('${id}', decodeAndParse('${itemJson}'))">詳細</button>
+                <button class="btn-edit-item" onclick="editItem('${id}', decodeAndParse('${itemJson}'))">編集</button>
+                <button class="btn-delete"    onclick="deleteItem('${id}')">削除</button>
+              </div>
+            </div>`;
+        }).join('');
+      } catch(e) {
+        list.innerHTML = '<div class="ledger-empty">読み込みエラー: ' + e.message + '</div>';
       }
-      list.innerHTML = [...data].reverse().map(item => {
-        const yieldStr = item.yieldRate != null ? '歩留まり：' + item.yieldRate.toFixed(1) + '%' : '';
-        const updatedStr = item.updatedAt ? '　更新：' + item.updatedAt : '';
-        return `
-          <div class="ledger-item">
-            <div class="ledger-item-left">
-              <div class="ledger-product-name">${item.productName}</div>
-              <div class="ledger-meta">原料：${item.materialName || '—'} ／ 投入：${item.baseQty}kg</div>
-              <div class="ledger-cost">${item.totalCost.toFixed(2)} 円/kg</div>
-              ${yieldStr ? '<div class="ledger-yield">' + yieldStr + '</div>' : ''}
-              <div class="ledger-date">登録：${item.registeredAt}${updatedStr}</div>
-            </div>
-            <div class="ledger-item-right">
-              <button class="btn-view"      onclick="viewDetail(${item.id})">詳細</button>
-              <button class="btn-edit-item" onclick="editItem(${item.id})">編集</button>
-              <button class="btn-delete"    onclick="deleteItem(${item.id})">削除</button>
-            </div>
-          </div>`;
-      }).join('');
-    }
+    };
+
+    window.decodeAndParse = function(str) {
+      return JSON.parse(decodeURIComponent(str));
+    };
 
     // ===== 詳細モーダル =====
-    function viewDetail(id) {
-      const data = JSON.parse(localStorage.getItem('costbreak-data') || '[]');
-      const item = data.find(d => d.id === id);
-      if (!item) return;
+    window.viewDetail = function(id, item) {
       document.getElementById('modal-title').textContent = item.productName;
 
       const processHTML = item.processes.map((p, i) => {
@@ -760,22 +761,10 @@
             </div>`).join('')}
           <div class="yield-box" style="margin-top:0.75rem;">
             <div class="yield-row">
-              <div class="yield-item">
-                <div class="yield-label">投入量</div>
-                <div class="yield-value">${item.baseQty} kg</div>
-              </div>
-              <div class="yield-item">
-                <div class="yield-label">完成品合計</div>
-                <div class="yield-value">${item.outputTotal.toFixed(1)} kg</div>
-              </div>
-              <div class="yield-item">
-                <div class="yield-label">ロス</div>
-                <div class="yield-value">${(item.baseQty - item.outputTotal).toFixed(1)} kg</div>
-              </div>
-              <div class="yield-item">
-                <div class="yield-label">歩留まり</div>
-                <div class="yield-value">${item.yieldRate != null ? item.yieldRate.toFixed(1) + ' %' : '—'}</div>
-              </div>
+              <div class="yield-item"><div class="yield-label">投入量</div><div class="yield-value">${item.baseQty} kg</div></div>
+              <div class="yield-item"><div class="yield-label">完成品合計</div><div class="yield-value">${item.outputTotal.toFixed(1)} kg</div></div>
+              <div class="yield-item"><div class="yield-label">ロス</div><div class="yield-value">${(item.baseQty - item.outputTotal).toFixed(1)} kg</div></div>
+              <div class="yield-item"><div class="yield-label">歩留まり</div><div class="yield-value">${item.yieldRate != null ? item.yieldRate.toFixed(1) + ' %' : '—'}</div></div>
             </div>
           </div>
         </div>` : '';
@@ -795,33 +784,35 @@
         ${fpHTML}`;
 
       document.getElementById('modal-overlay').classList.add('open');
-    }
+    };
 
     // ===== モーダルを閉じる =====
-    function closeModal(e) {
+    window.closeModal = function(e) {
       if (e.target === document.getElementById('modal-overlay'))
         document.getElementById('modal-overlay').classList.remove('open');
-    }
-    function closeModalDirect() {
+    };
+    window.closeModalDirect = function() {
       document.getElementById('modal-overlay').classList.remove('open');
-    }
+    };
 
-    // ===== 削除 =====
-    function deleteItem(id) {
+    // ===== 削除（Firestore） =====
+    window.deleteItem = async function(id) {
       if (!confirm('この登録を削除しますか？')) return;
-      let data = JSON.parse(localStorage.getItem('costbreak-data') || '[]');
-      data = data.filter(d => d.id !== id);
-      localStorage.setItem('costbreak-data', JSON.stringify(data));
-      renderLedger();
-    }
+      try {
+        await deleteDoc(doc(db, COL, id));
+        renderLedger();
+      } catch(e) {
+        alert('削除に失敗しました: ' + e.message);
+      }
+    };
 
     // ===== トースト =====
-    function showToast(msg) {
+    window.showToast = function(msg) {
       const t = document.getElementById('toast');
       t.textContent = msg;
       t.classList.add('show');
       setTimeout(() => t.classList.remove('show'), 2500);
-    }
+    };
 
     // ===== 起動時 =====
     addProcess();
