@@ -8,27 +8,28 @@
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
       font-family: 'Hiragino Kaku Gothic ProN', 'Meiryo', sans-serif;
-      background: #f5f5f0;
-      color: #222;
+      background: #1e1e2e;
+      color: #cdd6f4;
       font-size: 15px;
     }
 
     /* ===== ヘッダー ===== */
     .header {
-      background: #222; color: #fff;
+      background: #181825; color: #cdd6f4;
       padding: 1rem 1.5rem;
       display: flex; justify-content: space-between; align-items: center;
+      border-bottom: 1px solid #313244;
     }
     .header h1 { font-size: 17px; font-weight: 500; }
     .tab-buttons { display: flex; gap: 8px; }
     .tab-btn {
-      border: 1px solid #555; background: transparent; color: #ccc;
+      border: 1px solid #45475a; background: transparent; color: #a6adc8;
       border-radius: 6px; padding: 5px 14px; font-size: 13px;
       cursor: pointer; font-family: inherit;
     }
-    .tab-btn.active { background: #fff; color: #222; border-color: #fff; }
-    .tab-btn:hover { background: #444; color: #fff; }
-    .tab-btn.active:hover { background: #fff; color: #222; }
+    .tab-btn.active { background: #cdd6f4; color: #1e1e2e; border-color: #cdd6f4; }
+    .tab-btn:hover { background: #313244; color: #cdd6f4; }
+    .tab-btn.active:hover { background: #cdd6f4; color: #1e1e2e; }
 
     /* ===== コンテンツ ===== */
     .content { padding: 1.5rem 1rem; max-width: 680px; margin: 0 auto; }
@@ -37,145 +38,147 @@
 
     /* ===== カード ===== */
     .section {
-      background: #fff; border: 1px solid #e0e0d8;
+      background: #181825; border: 1px solid #313244;
       border-radius: 10px; padding: 1rem 1.25rem; margin-bottom: 1rem;
     }
-    h2 { font-size: 15px; font-weight: 500; margin-bottom: 1rem; color: #444; }
-    .note { font-size: 12px; color: #888; margin-bottom: 1.5rem; }
-    .label { font-size: 12px; color: #888; margin-bottom: 3px; }
+    h2 { font-size: 15px; font-weight: 500; margin-bottom: 1rem; color: #a6adc8; }
+    .note { font-size: 12px; color: #6c7086; margin-bottom: 1.5rem; }
+    .label { font-size: 12px; color: #6c7086; margin-bottom: 3px; }
     .input-row { display: flex; align-items: center; gap: 8px; margin-bottom: 0.75rem; }
-    .unit { font-size: 13px; color: #888; }
+    .unit { font-size: 13px; color: #6c7086; }
 
-    /* ===== 入力欄（黄色 = 入力箇所） ===== */
+    /* ===== 入力欄 ===== */
     input[type="text"], input[type="number"] {
-      padding: 7px 10px; border: 1px solid #ccc; border-radius: 6px;
-      font-size: 14px; background: #fffbe6; color: #222; font-family: inherit;
+      padding: 7px 10px; border: 1px solid #45475a; border-radius: 6px;
+      font-size: 14px; background: #2a2a3e; color: #cdd6f4; font-family: inherit;
     }
     input[type="text"] { width: 100%; }
     input[type="number"] { width: 150px; }
-    input:focus { outline: 2px solid #aaa; }
+    input:focus { outline: 2px solid #89b4fa; }
+    input::placeholder { color: #45475a; }
 
     /* ===== 工程ブロック ===== */
     .process-block {
-      background: #f9f9f6; border: 1px solid #e0e0d8;
+      background: #24273a; border: 1px solid #313244;
       border-radius: 8px; padding: 1rem; margin-bottom: 0.75rem;
     }
     .process-title {
       display: flex; justify-content: space-between; align-items: center;
-      font-size: 14px; font-weight: 500; margin-bottom: 0.75rem; color: #333;
+      font-size: 14px; font-weight: 500; margin-bottom: 0.75rem; color: #cdd6f4;
     }
-    .process-name-display { font-size: 13px; color: #555; font-weight: 400; }
+    .process-name-display { font-size: 13px; color: #a6adc8; font-weight: 400; }
     .cost-display {
-      font-size: 12px; color: #888;
-      margin-top: 0.5rem; padding-top: 0.5rem; border-top: 1px solid #e0e0d8;
+      font-size: 12px; color: #6c7086;
+      margin-top: 0.5rem; padding-top: 0.5rem; border-top: 1px solid #313244;
     }
-    .cost-value { font-size: 15px; font-weight: 500; color: #222; }
+    .cost-value { font-size: 15px; font-weight: 500; color: #a6e3a1; }
 
     /* ===== 完成品ブロック ===== */
     .product-block {
-      background: #f0f7ff; border: 1px solid #c8dff8;
+      background: #1e2a3a; border: 1px solid #2a4060;
       border-radius: 8px; padding: 1rem; margin-bottom: 0.75rem;
     }
     .product-title {
       display: flex; justify-content: space-between; align-items: center;
-      font-size: 14px; font-weight: 500; margin-bottom: 0.75rem; color: #336;
+      font-size: 14px; font-weight: 500; margin-bottom: 0.75rem; color: #89b4fa;
     }
 
     /* ===== 歩留まり表示 ===== */
     .yield-box {
-      background: #fff8e1; border: 1px solid #ffe082;
+      background: #2a2520; border: 1px solid #4a3f20;
       border-radius: 8px; padding: 1rem; margin-bottom: 1rem;
     }
-    .yield-label { font-size: 12px; color: #888; margin-bottom: 4px; }
-    .yield-value { font-size: 22px; font-weight: 500; color: #b8860b; }
-    .yield-detail { font-size: 12px; color: #888; margin-top: 4px; }
+    .yield-label { font-size: 12px; color: #6c7086; margin-bottom: 4px; }
+    .yield-value { font-size: 22px; font-weight: 500; color: #f9e2af; }
     .yield-row { display: flex; gap: 1rem; flex-wrap: wrap; }
     .yield-item { flex: 1; min-width: 120px; }
 
     /* ===== ボタン ===== */
     button {
-      border: 1px solid #ccc; background: #fff; border-radius: 6px;
+      border: 1px solid #45475a; background: #24273a; border-radius: 6px;
       padding: 6px 14px; font-size: 13px; cursor: pointer;
-      color: #333; font-family: inherit;
+      color: #cdd6f4; font-family: inherit;
     }
-    button:hover { background: #f0f0ec; }
+    button:hover { background: #313244; }
     button:disabled { opacity: 0.4; cursor: not-allowed; }
     .btn-add { margin-bottom: 1rem; }
-    .btn-remove { font-size: 12px; padding: 3px 10px; color: #999; }
+    .btn-remove { font-size: 12px; padding: 3px 10px; color: #6c7086; }
     .btn-register {
-      background: #222; color: #fff; border-color: #222;
+      background: #89b4fa; color: #1e1e2e; border-color: #89b4fa;
       padding: 10px 24px; font-size: 14px; width: 100%; margin-top: 0.5rem;
+      font-weight: 500;
     }
-    .btn-register:hover { background: #444; }
+    .btn-register:hover { background: #b4d0fb; }
     .btn-update {
-      background: #1a5c2a; color: #fff; border-color: #1a5c2a;
+      background: #a6e3a1; color: #1e1e2e; border-color: #a6e3a1;
       padding: 10px 24px; font-size: 14px; width: 100%; margin-top: 0.5rem;
+      font-weight: 500;
     }
-    .btn-update:hover { background: #227a38; }
+    .btn-update:hover { background: #c5f0c2; }
     .btn-cancel {
       padding: 10px 24px; font-size: 14px; width: 100%; margin-top: 0.5rem;
     }
 
     /* ===== 合計・結果 ===== */
-    .divider { border: none; border-top: 1px solid #e0e0d8; margin: 1rem 0; }
-    .result { background: #f0f0ec; border-radius: 8px; padding: 1rem; margin-bottom: 1rem; }
-    .result-label { font-size: 12px; color: #888; margin-bottom: 4px; }
-    .result-value { font-size: 28px; font-weight: 500; color: #222; }
+    .divider { border: none; border-top: 1px solid #313244; margin: 1rem 0; }
+    .result { background: #24273a; border-radius: 8px; padding: 1rem; margin-bottom: 1rem; border: 1px solid #313244; }
+    .result-label { font-size: 12px; color: #6c7086; margin-bottom: 4px; }
+    .result-value { font-size: 28px; font-weight: 500; color: #a6e3a1; }
 
     /* ===== 編集中バナー ===== */
     .edit-banner {
-      background: #fff8e1; border: 1px solid #ffe082;
+      background: #2a2520; border: 1px solid #4a3f20;
       border-radius: 8px; padding: 0.75rem 1rem;
-      margin-bottom: 1rem; font-size: 13px; color: #7a6000;
+      margin-bottom: 1rem; font-size: 13px; color: #f9e2af;
       display: none;
     }
     .edit-banner.show { display: block; }
 
     /* ===== 台帳 ===== */
-    .ledger-empty { text-align: center; color: #aaa; padding: 2rem; font-size: 14px; }
+    .ledger-empty { text-align: center; color: #45475a; padding: 2rem; font-size: 14px; }
     .ledger-item {
-      background: #fff; border: 1px solid #e0e0d8;
+      background: #181825; border: 1px solid #313244;
       border-radius: 10px; padding: 1rem 1.25rem; margin-bottom: 0.75rem;
       display: flex; justify-content: space-between; align-items: center;
     }
     .ledger-item-left { flex: 1; }
-    .ledger-product-name { font-size: 15px; font-weight: 500; margin-bottom: 3px; }
-    .ledger-meta { font-size: 12px; color: #888; margin-bottom: 3px; }
-    .ledger-cost { font-size: 18px; font-weight: 500; color: #222; }
-    .ledger-yield { font-size: 12px; color: #b8860b; margin-top: 2px; }
-    .ledger-date { font-size: 11px; color: #bbb; margin-top: 3px; }
+    .ledger-product-name { font-size: 15px; font-weight: 500; margin-bottom: 3px; color: #cdd6f4; }
+    .ledger-meta { font-size: 12px; color: #6c7086; margin-bottom: 3px; }
+    .ledger-cost { font-size: 18px; font-weight: 500; color: #a6e3a1; }
+    .ledger-yield { font-size: 12px; color: #f9e2af; margin-top: 2px; }
+    .ledger-date { font-size: 11px; color: #45475a; margin-top: 3px; }
     .ledger-item-right { display: flex; gap: 6px; flex-direction: column; align-items: flex-end; }
     .btn-view { font-size: 12px; padding: 4px 12px; }
-    .btn-edit-item { font-size: 12px; padding: 4px 12px; color: #1a5c2a; border-color: #a8d8b4; }
-    .btn-edit-item:hover { background: #f0fff4; }
-    .btn-delete { font-size: 12px; padding: 4px 12px; color: #c00; border-color: #fcc; }
-    .btn-delete:hover { background: #fff0f0; }
+    .btn-edit-item { font-size: 12px; padding: 4px 12px; color: #a6e3a1; border-color: #2a4a30; }
+    .btn-edit-item:hover { background: #1e3025; }
+    .btn-delete { font-size: 12px; padding: 4px 12px; color: #f38ba8; border-color: #4a2030; }
+    .btn-delete:hover { background: #2a1020; }
 
     /* ===== モーダル ===== */
     .modal-overlay {
       display: none; position: fixed;
       top: 0; left: 0; right: 0; bottom: 0;
-      background: rgba(0,0,0,0.4); z-index: 100;
+      background: rgba(0,0,0,0.6); z-index: 100;
       justify-content: center; align-items: flex-start;
       padding: 2rem 1rem; overflow-y: auto;
     }
     .modal-overlay.open { display: flex; }
     .modal {
-      background: #f5f5f0; border-radius: 12px;
+      background: #1e1e2e; border: 1px solid #313244; border-radius: 12px;
       padding: 1.5rem; width: 100%; max-width: 600px;
     }
     .modal-header {
       display: flex; justify-content: space-between; align-items: center;
       margin-bottom: 1rem;
     }
-    .modal-title { font-size: 16px; font-weight: 500; }
-    .btn-close { font-size: 18px; padding: 2px 10px; border: none; background: none; cursor: pointer; color: #888; }
+    .modal-title { font-size: 16px; font-weight: 500; color: #cdd6f4; }
+    .btn-close { font-size: 18px; padding: 2px 10px; border: none; background: none; cursor: pointer; color: #6c7086; }
 
     /* ===== トースト ===== */
     .toast {
       position: fixed; bottom: 2rem; left: 50%; transform: translateX(-50%);
-      background: #222; color: #fff; padding: 10px 24px;
-      border-radius: 8px; font-size: 14px;
+      background: #a6e3a1; color: #1e1e2e; padding: 10px 24px;
+      border-radius: 8px; font-size: 14px; font-weight: 500;
       opacity: 0; transition: opacity 0.3s; z-index: 200;
       pointer-events: none; white-space: nowrap;
     }
@@ -185,42 +188,42 @@
     .pw-overlay {
       display: flex; position: fixed;
       top: 0; left: 0; right: 0; bottom: 0;
-      background: #f5f5f0;
+      background: #1e1e2e;
       z-index: 300;
       justify-content: center; align-items: center;
     }
     .pw-overlay.hidden { display: none; }
     .pw-box {
-      background: #fff; border: 1px solid #e0e0d8;
+      background: #181825; border: 1px solid #313244;
       border-radius: 14px; padding: 2.5rem 2rem;
       width: 100%; max-width: 340px;
       text-align: center;
     }
-    .pw-title { font-size: 17px; font-weight: 500; color: #222; margin-bottom: 0.4rem; }
-    .pw-sub { font-size: 12px; color: #aaa; margin-bottom: 1.75rem; }
+    .pw-title { font-size: 17px; font-weight: 500; color: #cdd6f4; margin-bottom: 0.4rem; }
+    .pw-sub { font-size: 12px; color: #6c7086; margin-bottom: 1.75rem; }
     .pw-input {
       width: 100%; padding: 10px 14px;
-      border: 1px solid #ccc; border-radius: 8px;
-      font-size: 16px; background: #fffbe6;
+      border: 1px solid #45475a; border-radius: 8px;
+      font-size: 16px; background: #2a2a3e; color: #cdd6f4;
       text-align: center; letter-spacing: 4px;
       font-family: inherit; margin-bottom: 1rem;
     }
-    .pw-input:focus { outline: 2px solid #aaa; }
+    .pw-input:focus { outline: 2px solid #89b4fa; }
     .pw-btn {
-      width: 100%; background: #222; color: #fff;
+      width: 100%; background: #89b4fa; color: #1e1e2e;
       border: none; border-radius: 8px;
       padding: 11px; font-size: 14px; cursor: pointer;
-      font-family: inherit;
+      font-family: inherit; font-weight: 500;
     }
-    .pw-btn:hover { background: #444; }
+    .pw-btn:hover { background: #b4d0fb; }
     .pw-error {
-      font-size: 12px; color: #c00;
+      font-size: 12px; color: #f38ba8;
       margin-top: 0.75rem; min-height: 18px;
     }
 
     /* ===== ローディング ===== */
     .loading {
-      text-align: center; color: #aaa;
+      text-align: center; color: #45475a;
       padding: 2rem; font-size: 14px;
     }
   </style>
@@ -250,14 +253,13 @@
 
   <div class="content">
 
-    <!-- ========== 画面①：新規登録 / 編集 ========== -->
     <div class="screen active" id="screen-register">
 
       <div class="edit-banner" id="edit-banner">
         ✏️ 編集モード：内容を修正して「更新する」を押してください
       </div>
 
-      <p class="note">※ 黄色の欄が入力箇所です</p>
+      <p class="note">※ 入力欄に直接入力してください</p>
 
       <div class="section">
         <h2>製品名 / 作業全体の名称</h2>
@@ -291,7 +293,7 @@
 
       <div class="section">
         <h2>完成品 と 歩留まり</h2>
-        <p style="font-size:12px;color:#888;margin-bottom:1rem;">
+        <p style="font-size:12px;color:#6c7086;margin-bottom:1rem;">
           各工程を経て得られた完成品を入力すると、歩留まりが自動計算されます
         </p>
         <div id="finished-products"></div>
@@ -323,9 +325,8 @@
         <button class="btn-register" onclick="registerProduct()">この内容を登録する</button>
       </div>
 
-    </div><!-- /screen-register -->
+    </div>
 
-    <!-- ========== 画面②：原価台帳 ========== -->
     <div class="screen" id="screen-ledger">
       <h2 style="margin-bottom:1rem;">原価台帳</h2>
       <div id="ledger-list">
@@ -333,9 +334,8 @@
       </div>
     </div>
 
-  </div><!-- /content -->
+  </div>
 
-  <!-- ===== 詳細モーダル ===== -->
   <div class="modal-overlay" id="modal-overlay" onclick="closeModal(event)">
     <div class="modal">
       <div class="modal-header">
@@ -346,16 +346,13 @@
     </div>
   </div>
 
-  <!-- ===== トースト ===== -->
   <div class="toast" id="toast"></div>
 
-  <!-- ===== Firebase SDK ===== -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
     import { getFirestore, collection, addDoc, getDocs, doc, updateDoc, deleteDoc, query, orderBy }
       from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
-    // ===== Firebase設定 =====
     const firebaseConfig = {
       apiKey: "AIzaSyANwaKngLi4_zi4eyOljYmd7hHfH7SiEXk",
       authDomain: "cost-break-analysis.firebaseapp.com",
@@ -369,8 +366,7 @@
     const db  = getFirestore(app);
     const COL = 'costbreak';
 
-    // ===== パスワード認証 =====
-    const CORRECT_PASSWORD = '1234';
+    const CORRECT_PASSWORD = '4144';
 
     window.checkPassword = function() {
       const input = document.getElementById('pw-input').value;
@@ -388,12 +384,10 @@
       document.getElementById('pw-overlay').classList.add('hidden');
     }
 
-    // ===== 状態管理 =====
     let processCount = 0;
     let fpCount = 0;
     let editingId = null;
 
-    // ===== タブ切り替え =====
     window.showScreen = function(name, btn) {
       document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
       document.getElementById('screen-' + name).classList.add('active');
@@ -402,7 +396,6 @@
       if (name === 'ledger') renderLedger();
     };
 
-    // ===== 工程追加 =====
     window.addProcess = function() {
       if (processCount >= 6) return;
       processCount++;
@@ -443,7 +436,6 @@
       calc();
     };
 
-    // ===== 工程削除 =====
     window.removeProcess = function(id) {
       document.getElementById('process-' + id)?.remove();
       processCount = document.querySelectorAll('.process-block').length;
@@ -451,7 +443,6 @@
       calc();
     };
 
-    // ===== 完成品追加 =====
     window.addFinishedProduct = function() {
       fpCount++;
       const id = fpCount;
@@ -476,13 +467,11 @@
       calcYield();
     };
 
-    // ===== 完成品削除 =====
     window.removeFinishedProduct = function(id) {
       document.getElementById('fp-' + id)?.remove();
       calcYield();
     };
 
-    // ===== コスト計算 =====
     window.calc = function() {
       const baseQty = parseFloat(document.getElementById('base-qty').value);
       let total = 0;
@@ -505,7 +494,6 @@
       return total;
     };
 
-    // ===== 歩留まり計算 =====
     window.calcYield = function() {
       const baseQty = parseFloat(document.getElementById('base-qty').value) || 0;
       let outputTotal = 0;
@@ -527,7 +515,6 @@
       }
     };
 
-    // ===== データ収集 =====
     function collectFinishedProducts() {
       const fps = [];
       document.querySelectorAll('.product-block').forEach(block => {
@@ -554,7 +541,6 @@
       return processes;
     }
 
-    // ===== 登録（Firestore） =====
     window.registerProduct = async function() {
       const productName = document.getElementById('product-name').value.trim();
       if (!productName) { alert('製品名を入力してください'); return; }
@@ -587,7 +573,6 @@
       }
     };
 
-    // ===== 更新（Firestore） =====
     window.updateProduct = async function() {
       const productName = document.getElementById('product-name').value.trim();
       if (!productName) { alert('製品名を入力してください'); return; }
@@ -619,7 +604,6 @@
       }
     };
 
-    // ===== 編集モード =====
     window.editItem = function(id, itemData) {
       document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
       document.getElementById('screen-register').classList.add('active');
@@ -667,7 +651,6 @@
 
     window.cancelEdit = function() { resetForm(); };
 
-    // ===== フォームリセット =====
     window.resetForm = function(resetEditId = true) {
       document.getElementById('product-name').value  = '';
       document.getElementById('material-name').value = '';
@@ -689,7 +672,6 @@
       addProcess();
     };
 
-    // ===== 台帳描画（Firestore） =====
     window.renderLedger = async function() {
       const list = document.getElementById('ledger-list');
       list.innerHTML = '<div class="loading">読み込み中...</div>';
@@ -731,7 +713,6 @@
       return JSON.parse(decodeURIComponent(str));
     };
 
-    // ===== 詳細モーダル =====
     window.viewDetail = function(id, item) {
       document.getElementById('modal-title').textContent = item.productName;
 
@@ -739,10 +720,10 @@
         const cost = item.baseQty > 0 ? (p.workers * p.hours * p.wage) / item.baseQty : 0;
         return `
           <div class="process-block" style="margin-bottom:0.5rem;">
-            <div style="font-size:14px;font-weight:500;margin-bottom:0.5rem;">
+            <div style="font-size:14px;font-weight:500;margin-bottom:0.5rem;color:#cdd6f4;">
               工程${i+1}${p.name ? '　／　' + p.name : ''}
             </div>
-            <div style="font-size:13px;color:#666;line-height:2;">
+            <div style="font-size:13px;color:#a6adc8;line-height:2;">
               作業者数：${p.workers}人　／　作業時間：${p.hours}h　／　基本賃金：${p.wage}円/h
             </div>
             <div class="cost-display">
@@ -755,7 +736,7 @@
         <div class="section" style="margin-bottom:0.75rem;">
           <h2>完成品</h2>
           ${item.finishedProducts.map((fp, i) => `
-            <div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid #eee;font-size:14px;">
+            <div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid #313244;font-size:14px;color:#cdd6f4;">
               <span>${fp.name || '完成品' + (i+1)}</span>
               <span>${fp.qty} kg</span>
             </div>`).join('')}
@@ -772,9 +753,9 @@
       document.getElementById('modal-body').innerHTML = `
         <div class="section" style="margin-bottom:0.75rem;">
           <div class="label">原料名</div>
-          <div style="font-size:14px;margin-bottom:0.75rem;">${item.materialName || '—'}</div>
+          <div style="font-size:14px;margin-bottom:0.75rem;color:#cdd6f4;">${item.materialName || '—'}</div>
           <div class="label">基本原料数（投入量）</div>
-          <div style="font-size:14px;">${item.baseQty} kg</div>
+          <div style="font-size:14px;color:#cdd6f4;">${item.baseQty} kg</div>
         </div>
         ${processHTML}
         <div class="result">
@@ -786,7 +767,6 @@
       document.getElementById('modal-overlay').classList.add('open');
     };
 
-    // ===== モーダルを閉じる =====
     window.closeModal = function(e) {
       if (e.target === document.getElementById('modal-overlay'))
         document.getElementById('modal-overlay').classList.remove('open');
@@ -795,7 +775,6 @@
       document.getElementById('modal-overlay').classList.remove('open');
     };
 
-    // ===== 削除（Firestore） =====
     window.deleteItem = async function(id) {
       if (!confirm('この登録を削除しますか？')) return;
       try {
@@ -806,7 +785,6 @@
       }
     };
 
-    // ===== トースト =====
     window.showToast = function(msg) {
       const t = document.getElementById('toast');
       t.textContent = msg;
@@ -814,7 +792,6 @@
       setTimeout(() => t.classList.remove('show'), 2500);
     };
 
-    // ===== 起動時 =====
     addProcess();
   </script>
 
