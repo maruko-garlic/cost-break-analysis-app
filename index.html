@@ -12,8 +12,6 @@
       color: #cdd6f4;
       font-size: 15px;
     }
-
-    /* ===== ヘッダー ===== */
     .header {
       background: #181825; color: #cdd6f4;
       padding: 1rem 1.5rem;
@@ -30,13 +28,9 @@
     .tab-btn.active { background: #cdd6f4; color: #1e1e2e; border-color: #cdd6f4; }
     .tab-btn:hover { background: #313244; color: #cdd6f4; }
     .tab-btn.active:hover { background: #cdd6f4; color: #1e1e2e; }
-
-    /* ===== コンテンツ ===== */
     .content { padding: 1.5rem 1rem; max-width: 680px; margin: 0 auto; }
     .screen { display: none; }
     .screen.active { display: block; }
-
-    /* ===== カード ===== */
     .section {
       background: #181825; border: 1px solid #313244;
       border-radius: 10px; padding: 1rem 1.25rem; margin-bottom: 1rem;
@@ -46,8 +40,6 @@
     .label { font-size: 12px; color: #6c7086; margin-bottom: 3px; }
     .input-row { display: flex; align-items: center; gap: 8px; margin-bottom: 0.75rem; }
     .unit { font-size: 13px; color: #6c7086; }
-
-    /* ===== 入力欄 ===== */
     input[type="text"], input[type="number"] {
       padding: 7px 10px; border: 1px solid #45475a; border-radius: 6px;
       font-size: 14px; background: #2a2a3e; color: #cdd6f4; font-family: inherit;
@@ -56,8 +48,6 @@
     input[type="number"] { width: 150px; }
     input:focus { outline: 2px solid #89b4fa; }
     input::placeholder { color: #45475a; }
-
-    /* ===== 工程ブロック ===== */
     .process-block {
       background: #24273a; border: 1px solid #313244;
       border-radius: 8px; padding: 1rem; margin-bottom: 0.75rem;
@@ -72,8 +62,6 @@
       margin-top: 0.5rem; padding-top: 0.5rem; border-top: 1px solid #313244;
     }
     .cost-value { font-size: 15px; font-weight: 500; color: #a6e3a1; }
-
-    /* ===== 完成品ブロック ===== */
     .product-block {
       background: #1e2a3a; border: 1px solid #2a4060;
       border-radius: 8px; padding: 1rem; margin-bottom: 0.75rem;
@@ -82,8 +70,6 @@
       display: flex; justify-content: space-between; align-items: center;
       font-size: 14px; font-weight: 500; margin-bottom: 0.75rem; color: #89b4fa;
     }
-
-    /* ===== 歩留まり表示 ===== */
     .yield-box {
       background: #2a2520; border: 1px solid #4a3f20;
       border-radius: 8px; padding: 1rem; margin-bottom: 1rem;
@@ -92,8 +78,6 @@
     .yield-value { font-size: 22px; font-weight: 500; color: #f9e2af; }
     .yield-row { display: flex; gap: 1rem; flex-wrap: wrap; }
     .yield-item { flex: 1; min-width: 120px; }
-
-    /* ===== ボタン ===== */
     button {
       border: 1px solid #45475a; background: #24273a; border-radius: 6px;
       padding: 6px 14px; font-size: 13px; cursor: pointer;
@@ -118,14 +102,10 @@
     .btn-cancel {
       padding: 10px 24px; font-size: 14px; width: 100%; margin-top: 0.5rem;
     }
-
-    /* ===== 合計・結果 ===== */
     .divider { border: none; border-top: 1px solid #313244; margin: 1rem 0; }
     .result { background: #24273a; border-radius: 8px; padding: 1rem; margin-bottom: 1rem; border: 1px solid #313244; }
     .result-label { font-size: 12px; color: #6c7086; margin-bottom: 4px; }
     .result-value { font-size: 28px; font-weight: 500; color: #a6e3a1; }
-
-    /* ===== 編集中バナー ===== */
     .edit-banner {
       background: #2a2520; border: 1px solid #4a3f20;
       border-radius: 8px; padding: 0.75rem 1rem;
@@ -133,8 +113,6 @@
       display: none;
     }
     .edit-banner.show { display: block; }
-
-    /* ===== 台帳 ===== */
     .ledger-empty { text-align: center; color: #45475a; padding: 2rem; font-size: 14px; }
     .ledger-item {
       background: #181825; border: 1px solid #313244;
@@ -153,8 +131,6 @@
     .btn-edit-item:hover { background: #1e3025; }
     .btn-delete { font-size: 12px; padding: 4px 12px; color: #f38ba8; border-color: #4a2030; }
     .btn-delete:hover { background: #2a1020; }
-
-    /* ===== モーダル ===== */
     .modal-overlay {
       display: none; position: fixed;
       top: 0; left: 0; right: 0; bottom: 0;
@@ -173,8 +149,6 @@
     }
     .modal-title { font-size: 16px; font-weight: 500; color: #cdd6f4; }
     .btn-close { font-size: 18px; padding: 2px 10px; border: none; background: none; cursor: pointer; color: #6c7086; }
-
-    /* ===== トースト ===== */
     .toast {
       position: fixed; bottom: 2rem; left: 50%; transform: translateX(-50%);
       background: #a6e3a1; color: #1e1e2e; padding: 10px 24px;
@@ -183,8 +157,6 @@
       pointer-events: none; white-space: nowrap;
     }
     .toast.show { opacity: 1; }
-
-    /* ===== パスワード画面 ===== */
     .pw-overlay {
       display: flex; position: fixed;
       top: 0; left: 0; right: 0; bottom: 0;
@@ -220,8 +192,6 @@
       font-size: 12px; color: #f38ba8;
       margin-top: 0.75rem; min-height: 18px;
     }
-
-    /* ===== ローディング ===== */
     .loading {
       text-align: center; color: #45475a;
       padding: 2rem; font-size: 14px;
@@ -230,7 +200,6 @@
 </head>
 <body>
 
-  <!-- ===== パスワード画面 ===== -->
   <div class="pw-overlay" id="pw-overlay">
     <div class="pw-box">
       <div class="pw-title">生産コストブレイク</div>
@@ -242,7 +211,6 @@
     </div>
   </div>
 
-  <!-- ===== ヘッダー ===== -->
   <div class="header">
     <h1>生産コストブレイク</h1>
     <div class="tab-buttons">
@@ -381,8 +349,10 @@
     }
 
     // ===== 状態 =====
-    let processCount = 0;
-    let fpCount = 0;
+    // processSeq / fpSeq は「これまでに発行した最大番号」として使う
+    // 削除しても減らさないことでIDの重複を防ぐ
+    let processSeq = 0;
+    let fpSeq = 0;
     let editingId = null;
 
     // ===== タブ切替 =====
@@ -396,15 +366,20 @@
 
     // ===== 工程 =====
     function addProcess() {
-      if (processCount >= 6) return;
-      processCount++;
-      const id = processCount;
+      // 上限チェックは「現在の個数」で行う
+      const current = document.querySelectorAll('.process-block').length;
+      if (current >= 6) return;
+
+      processSeq++; // 通し番号を増やす（削除しても戻さない）
+      const id = processSeq;
+      const displayNum = current + 1; // 画面に表示する番号
+
       const div = document.createElement('div');
       div.className = 'process-block';
       div.id = 'process-' + id;
       div.innerHTML = `
         <div class="process-title">
-          <span>工程 ${id}　<span class="process-name-display" id="name-display-${id}"></span></span>
+          <span>工程 <span class="process-num" id="pnum-${id}">${displayNum}</span>　<span class="process-name-display" id="name-display-${id}"></span></span>
           <button class="btn-remove" onclick="removeProcess(${id})">削除</button>
         </div>
         <div class="label">工程名</div>
@@ -431,27 +406,39 @@
           この工程の生産コスト：<span class="cost-value" id="cost-${id}">—</span>
         </div>`;
       document.getElementById('processes').appendChild(div);
-      if (processCount >= 6) document.getElementById('add-btn').disabled = true;
+
+      // 追加後の個数で上限チェック
+      if (document.querySelectorAll('.process-block').length >= 6) {
+        document.getElementById('add-btn').disabled = true;
+      }
       calc();
     }
 
     function removeProcess(id) {
       document.getElementById('process-' + id)?.remove();
-      processCount = document.querySelectorAll('.process-block').length;
+      // 削除後、表示番号を1から振り直す
+      document.querySelectorAll('.process-block').forEach((block, index) => {
+        const numEl = block.querySelector('.process-num');
+        if (numEl) numEl.textContent = index + 1;
+      });
       document.getElementById('add-btn').disabled = false;
       calc();
     }
 
     // ===== 完成品 =====
     function addFinishedProduct() {
-      fpCount++;
-      const id = fpCount;
+      const current = document.querySelectorAll('.product-block').length;
+
+      fpSeq++; // 通し番号を増やす（削除しても戻さない）
+      const id = fpSeq;
+      const displayNum = current + 1;
+
       const div = document.createElement('div');
       div.className = 'product-block';
       div.id = 'fp-' + id;
       div.innerHTML = `
         <div class="product-title">
-          <span>完成品 ${id}</span>
+          <span>完成品 <span class="fp-num" id="fpnum-${id}">${displayNum}</span></span>
           <button class="btn-remove" onclick="removeFinishedProduct(${id})">削除</button>
         </div>
         <div class="label">完成品名</div>
@@ -469,6 +456,11 @@
 
     function removeFinishedProduct(id) {
       document.getElementById('fp-' + id)?.remove();
+      // 削除後、表示番号を1から振り直す
+      document.querySelectorAll('.product-block').forEach((block, index) => {
+        const numEl = block.querySelector('.fp-num');
+        if (numEl) numEl.textContent = index + 1;
+      });
       calcYield();
     }
 
@@ -482,7 +474,7 @@
         const h  = parseFloat(document.getElementById('hours-'   + id)?.value);
         const wg = parseFloat(document.getElementById('wage-'    + id)?.value);
         const costEl = document.getElementById('cost-' + id);
-        if (w > 0 && h > 0 && wg > 0 && baseQty > 0) {
+        if (!isNaN(w) && w > 0 && !isNaN(h) && h > 0 && !isNaN(wg) && wg > 0 && !isNaN(baseQty) && baseQty > 0) {
           const cost = (w * h * wg) / baseQty;
           costEl.textContent = cost.toFixed(2) + ' 円/kg';
           total += cost;
@@ -626,11 +618,11 @@
       document.getElementById('base-qty').value       = itemData.baseQty;
 
       document.getElementById('processes').innerHTML = '';
-      processCount = 0;
       document.getElementById('add-btn').disabled = false;
       itemData.processes.forEach(p => {
         addProcess();
-        const pid = processCount;
+        const lastBlock = document.querySelector('#processes .process-block:last-child');
+        const pid = lastBlock.id.split('-')[1];
         document.getElementById('process-name-' + pid).value = p.name;
         document.getElementById('name-display-'  + pid).textContent = p.name ? '／ ' + p.name : '';
         document.getElementById('workers-' + pid).value = p.workers;
@@ -639,10 +631,10 @@
       });
 
       document.getElementById('finished-products').innerHTML = '';
-      fpCount = 0;
       (itemData.finishedProducts || []).forEach(fp => {
         addFinishedProduct();
-        const fid = fpCount;
+        const lastFP = document.querySelector('#finished-products .product-block:last-child');
+        const fid = lastFP.id.split('-')[1];
         document.getElementById('fp-name-' + fid).value = fp.name;
         document.getElementById('fp-qty-'  + fid).value = fp.qty;
       });
@@ -670,8 +662,7 @@
       document.getElementById('yield-output').textContent = '—';
       document.getElementById('yield-loss').textContent   = '—';
       document.getElementById('yield-rate').textContent   = '—';
-      processCount = 0;
-      fpCount = 0;
+      // processSeq / fpSeq はリセットしない（重複防止のため）
       document.getElementById('add-btn').disabled = false;
       document.getElementById('edit-banner').classList.remove('show');
       document.getElementById('form-buttons').innerHTML =
