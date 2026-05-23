@@ -35,30 +35,30 @@
       background: #181825; border: 1px solid #313244;
       border-radius: 10px; padding: 1rem 1.25rem; margin-bottom: 1rem;
     }
-    h2 { font-size: 15px; font-weight: 500; margin-bottom: 1rem; color: #a6adc8; }
-    .note { font-size: 12px; color: #6c7086; margin-bottom: 1.5rem; }
-    .label { font-size: 12px; color: #6c7086; margin-bottom: 3px; }
+    h2 { font-size: 16px; font-weight: 500; margin-bottom: 1rem; color: #cdd6f4; }
+    .note { font-size: 13px; color: #6c7086; margin-bottom: 1.5rem; }
+    .label { font-size: 14px; color: #bac2de; margin-bottom: 4px; font-weight: 500; }
     .input-row { display: flex; align-items: center; gap: 8px; margin-bottom: 0.75rem; }
-    .unit { font-size: 13px; color: #6c7086; }
+    .unit { font-size: 14px; color: #a6adc8; }
     input[type="text"], input[type="number"] {
-      padding: 7px 10px; border: 1px solid #45475a; border-radius: 6px;
-      font-size: 14px; background: #2a2a3e; color: #cdd6f4; font-family: inherit;
+      padding: 8px 10px; border: 1px solid #45475a; border-radius: 6px;
+      font-size: 15px; background: #2a2a3e; color: #cdd6f4; font-family: inherit;
     }
     input[type="text"] { width: 100%; }
     input[type="number"] { width: 150px; }
     input:focus { outline: 2px solid #89b4fa; }
-    input::placeholder { color: #45475a; }
+    input::placeholder { color: #585b70; }
     .process-block {
       background: #24273a; border: 1px solid #313244;
       border-radius: 8px; padding: 1rem; margin-bottom: 0.75rem;
     }
     .process-title {
       display: flex; justify-content: space-between; align-items: center;
-      font-size: 14px; font-weight: 500; margin-bottom: 0.75rem; color: #cdd6f4;
+      font-size: 15px; font-weight: 500; margin-bottom: 0.75rem; color: #cdd6f4;
     }
-    .process-name-display { font-size: 13px; color: #a6adc8; font-weight: 400; }
+    .process-name-display { font-size: 14px; color: #a6adc8; font-weight: 400; }
     .cost-display {
-      font-size: 12px; color: #6c7086;
+      font-size: 13px; color: #a6adc8;
       margin-top: 0.5rem; padding-top: 0.5rem; border-top: 1px solid #313244;
     }
     .cost-value { font-size: 15px; font-weight: 500; color: #a6e3a1; }
@@ -68,13 +68,13 @@
     }
     .product-title {
       display: flex; justify-content: space-between; align-items: center;
-      font-size: 14px; font-weight: 500; margin-bottom: 0.75rem; color: #89b4fa;
+      font-size: 15px; font-weight: 500; margin-bottom: 0.75rem; color: #89b4fa;
     }
     .yield-box {
       background: #2a2520; border: 1px solid #4a3f20;
       border-radius: 8px; padding: 1rem; margin-bottom: 1rem;
     }
-    .yield-label { font-size: 12px; color: #6c7086; margin-bottom: 4px; }
+    .yield-label { font-size: 13px; color: #a6adc8; margin-bottom: 4px; }
     .yield-value { font-size: 22px; font-weight: 500; color: #f9e2af; }
     .yield-row { display: flex; gap: 1rem; flex-wrap: wrap; }
     .yield-item { flex: 1; min-width: 120px; }
@@ -104,15 +104,30 @@
     }
     .divider { border: none; border-top: 1px solid #313244; margin: 1rem 0; }
     .result { background: #24273a; border-radius: 8px; padding: 1rem; margin-bottom: 1rem; border: 1px solid #313244; }
-    .result-label { font-size: 12px; color: #6c7086; margin-bottom: 4px; }
+    .result-label { font-size: 13px; color: #a6adc8; margin-bottom: 4px; }
     .result-value { font-size: 28px; font-weight: 500; color: #a6e3a1; }
     .edit-banner {
       background: #2a2520; border: 1px solid #4a3f20;
       border-radius: 8px; padding: 0.75rem 1rem;
-      margin-bottom: 1rem; font-size: 13px; color: #f9e2af;
+      margin-bottom: 1rem; font-size: 14px; color: #f9e2af;
       display: none;
     }
     .edit-banner.show { display: block; }
+
+    /* ===== 検索欄 ===== */
+    .search-box {
+      margin-bottom: 1rem;
+    }
+    .search-box input {
+      width: 100%; padding: 9px 12px;
+      border: 1px solid #45475a; border-radius: 8px;
+      font-size: 15px; background: #24273a; color: #cdd6f4;
+      font-family: inherit;
+    }
+    .search-box input:focus { outline: 2px solid #89b4fa; }
+    .search-box input::placeholder { color: #585b70; }
+
+    /* ===== 台帳 ===== */
     .ledger-empty { text-align: center; color: #45475a; padding: 2rem; font-size: 14px; }
     .ledger-item {
       background: #181825; border: 1px solid #313244;
@@ -120,11 +135,12 @@
       display: flex; justify-content: space-between; align-items: center;
     }
     .ledger-item-left { flex: 1; }
-    .ledger-product-name { font-size: 15px; font-weight: 500; margin-bottom: 3px; color: #cdd6f4; }
-    .ledger-meta { font-size: 12px; color: #6c7086; margin-bottom: 3px; }
+    .ledger-product-name { font-size: 16px; font-weight: 500; margin-bottom: 3px; color: #cdd6f4; }
+    .ledger-meta { font-size: 13px; color: #a6adc8; margin-bottom: 3px; }
     .ledger-cost { font-size: 18px; font-weight: 500; color: #a6e3a1; }
-    .ledger-yield { font-size: 12px; color: #f9e2af; margin-top: 2px; }
-    .ledger-date { font-size: 11px; color: #45475a; margin-top: 3px; }
+    .ledger-yield { font-size: 13px; color: #f9e2af; margin-top: 2px; }
+    .ledger-date { font-size: 13px; color: #6c7086; margin-top: 3px; }
+    .ledger-registrant { font-size: 13px; color: #89b4fa; margin-top: 2px; }
     .ledger-item-right { display: flex; gap: 6px; flex-direction: column; align-items: flex-end; }
     .btn-view { font-size: 12px; padding: 4px 12px; }
     .btn-edit-item { font-size: 12px; padding: 4px 12px; color: #a6e3a1; border-color: #2a4a30; }
@@ -160,19 +176,17 @@
     .pw-overlay {
       display: flex; position: fixed;
       top: 0; left: 0; right: 0; bottom: 0;
-      background: #1e1e2e;
-      z-index: 300;
+      background: #1e1e2e; z-index: 300;
       justify-content: center; align-items: center;
     }
     .pw-overlay.hidden { display: none; }
     .pw-box {
       background: #181825; border: 1px solid #313244;
       border-radius: 14px; padding: 2.5rem 2rem;
-      width: 100%; max-width: 340px;
-      text-align: center;
+      width: 100%; max-width: 340px; text-align: center;
     }
     .pw-title { font-size: 17px; font-weight: 500; color: #cdd6f4; margin-bottom: 0.4rem; }
-    .pw-sub { font-size: 12px; color: #6c7086; margin-bottom: 1.75rem; }
+    .pw-sub { font-size: 13px; color: #6c7086; margin-bottom: 1.75rem; }
     .pw-input {
       width: 100%; padding: 10px 14px;
       border: 1px solid #45475a; border-radius: 8px;
@@ -188,14 +202,22 @@
       font-family: inherit; font-weight: 500;
     }
     .pw-btn:hover { background: #b4d0fb; }
-    .pw-error {
-      font-size: 12px; color: #f38ba8;
-      margin-top: 0.75rem; min-height: 18px;
+    .pw-error { font-size: 13px; color: #f38ba8; margin-top: 0.75rem; min-height: 18px; }
+    .loading { text-align: center; color: #45475a; padding: 2rem; font-size: 14px; }
+
+    /* ===== 完成品率テーブル（ポップアップ用） ===== */
+    .fp-rate-table { width: 100%; border-collapse: collapse; margin-top: 0.5rem; }
+    .fp-rate-table th {
+      font-size: 13px; color: #a6adc8; font-weight: 500;
+      padding: 6px 8px; border-bottom: 1px solid #313244; text-align: left;
     }
-    .loading {
-      text-align: center; color: #45475a;
-      padding: 2rem; font-size: 14px;
+    .fp-rate-table td {
+      font-size: 14px; color: #cdd6f4;
+      padding: 6px 8px; border-bottom: 1px solid #1e1e2e;
     }
+    .fp-rate-table tr:last-child td { border-bottom: none; }
+    .fp-rate-pct { color: #f9e2af; font-weight: 500; }
+    .fp-rate-loss td { color: #f38ba8; }
   </style>
 </head>
 <body>
@@ -261,7 +283,7 @@
 
       <div class="section">
         <h2>完成品 と 歩留まり</h2>
-        <p style="font-size:12px;color:#6c7086;margin-bottom:1rem;">
+        <p style="font-size:13px;color:#a6adc8;margin-bottom:1rem;">
           各工程を経て得られた完成品を入力すると、歩留まりが自動計算されます
         </p>
         <div id="finished-products"></div>
@@ -289,6 +311,12 @@
         </div>
       </div>
 
+      <div class="section">
+        <h2>登録者名</h2>
+        <div class="label">登録者名（必須・フルネーム）</div>
+        <input type="text" id="registrant-name" placeholder="例: 山田 太郎">
+      </div>
+
       <div id="form-buttons">
         <button class="btn-register" onclick="registerProduct()">この内容を登録する</button>
       </div>
@@ -297,6 +325,9 @@
 
     <div class="screen" id="screen-ledger">
       <h2 style="margin-bottom:1rem;">原価台帳</h2>
+      <div class="search-box">
+        <input type="text" id="search-input" placeholder="🔍 製品名・原料名・登録者名で検索" oninput="renderLedger()">
+      </div>
       <div id="ledger-list">
         <div class="loading">読み込み中...</div>
       </div>
@@ -320,7 +351,6 @@
     const CORRECT_PASSWORD = '1234';
     const STORAGE_KEY = 'costbreak-items';
 
-    // ===== パスワード =====
     function checkPassword() {
       const input = document.getElementById('pw-input').value;
       if (input === CORRECT_PASSWORD) {
@@ -337,25 +367,20 @@
       document.getElementById('pw-overlay').classList.add('hidden');
     }
 
-    // ===== LocalStorage =====
     function loadItems() {
-      try {
-        return JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
-      } catch(e) { return []; }
+      try { return JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]'); }
+      catch(e) { return []; }
     }
 
     function saveItems(items) {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(items));
     }
 
-    // ===== 状態 =====
-    // processSeq / fpSeq は「これまでに発行した最大番号」として使う
-    // 削除しても減らさないことでIDの重複を防ぐ
+    // processSeq / fpSeq は通し番号（削除しても戻さない＝ID重複防止）
     let processSeq = 0;
     let fpSeq = 0;
     let editingId = null;
 
-    // ===== タブ切替 =====
     function showScreen(name, btn) {
       document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
       document.getElementById('screen-' + name).classList.add('active');
@@ -364,16 +389,12 @@
       if (name === 'ledger') renderLedger();
     }
 
-    // ===== 工程 =====
     function addProcess() {
-      // 上限チェックは「現在の個数」で行う
       const current = document.querySelectorAll('.process-block').length;
       if (current >= 6) return;
-
-      processSeq++; // 通し番号を増やす（削除しても戻さない）
+      processSeq++;
       const id = processSeq;
-      const displayNum = current + 1; // 画面に表示する番号
-
+      const displayNum = current + 1;
       const div = document.createElement('div');
       div.className = 'process-block';
       div.id = 'process-' + id;
@@ -406,8 +427,6 @@
           この工程の生産コスト：<span class="cost-value" id="cost-${id}">—</span>
         </div>`;
       document.getElementById('processes').appendChild(div);
-
-      // 追加後の個数で上限チェック
       if (document.querySelectorAll('.process-block').length >= 6) {
         document.getElementById('add-btn').disabled = true;
       }
@@ -416,7 +435,6 @@
 
     function removeProcess(id) {
       document.getElementById('process-' + id)?.remove();
-      // 削除後、表示番号を1から振り直す
       document.querySelectorAll('.process-block').forEach((block, index) => {
         const numEl = block.querySelector('.process-num');
         if (numEl) numEl.textContent = index + 1;
@@ -425,14 +443,11 @@
       calc();
     }
 
-    // ===== 完成品 =====
     function addFinishedProduct() {
       const current = document.querySelectorAll('.product-block').length;
-
-      fpSeq++; // 通し番号を増やす（削除しても戻さない）
+      fpSeq++;
       const id = fpSeq;
       const displayNum = current + 1;
-
       const div = document.createElement('div');
       div.className = 'product-block';
       div.id = 'fp-' + id;
@@ -456,7 +471,6 @@
 
     function removeFinishedProduct(id) {
       document.getElementById('fp-' + id)?.remove();
-      // 削除後、表示番号を1から振り直す
       document.querySelectorAll('.product-block').forEach((block, index) => {
         const numEl = block.querySelector('.fp-num');
         if (numEl) numEl.textContent = index + 1;
@@ -464,7 +478,6 @@
       calcYield();
     }
 
-    // ===== 計算 =====
     function calc() {
       const baseQty = parseFloat(document.getElementById('base-qty').value);
       let total = 0;
@@ -534,12 +547,13 @@
       return processes;
     }
 
-    // ===== 登録 =====
     function registerProduct() {
       const productName = document.getElementById('product-name').value.trim();
       if (!productName) { alert('製品名を入力してください'); return; }
       const baseQty = parseFloat(document.getElementById('base-qty').value);
       if (!baseQty || baseQty <= 0) { alert('基本原料数を入力してください'); return; }
+      const registrantName = document.getElementById('registrant-name').value.trim();
+      if (!registrantName) { alert('登録者名を入力してください（フルネーム）'); return; }
 
       const fps = collectFinishedProducts();
       const outputTotal = fps.reduce((s, f) => s + f.qty, 0);
@@ -556,6 +570,7 @@
         outputTotal,
         yieldRate,
         totalCost: calc(),
+        registrantName,
         registeredAt: new Date().toLocaleString('ja-JP'),
         updatedAt: null,
       };
@@ -566,12 +581,13 @@
       resetForm();
     }
 
-    // ===== 更新 =====
     function updateProduct() {
       const productName = document.getElementById('product-name').value.trim();
       if (!productName) { alert('製品名を入力してください'); return; }
       const baseQty = parseFloat(document.getElementById('base-qty').value);
       if (!baseQty || baseQty <= 0) { alert('基本原料数を入力してください'); return; }
+      const registrantName = document.getElementById('registrant-name').value.trim();
+      if (!registrantName) { alert('登録者名を入力してください（フルネーム）'); return; }
 
       const fps = collectFinishedProducts();
       const outputTotal = fps.reduce((s, f) => s + f.qty, 0);
@@ -591,6 +607,7 @@
         outputTotal,
         yieldRate,
         totalCost: calc(),
+        registrantName,
         updatedAt: new Date().toLocaleString('ja-JP'),
       };
 
@@ -599,7 +616,6 @@
       resetForm();
     }
 
-    // ===== 編集 =====
     function editItem(id) {
       const items = loadItems();
       const itemData = items.find(i => i.id === id);
@@ -613,9 +629,10 @@
       resetForm(false);
       editingId = id;
 
-      document.getElementById('product-name').value  = itemData.productName;
-      document.getElementById('material-name').value = itemData.materialName || '';
-      document.getElementById('base-qty').value       = itemData.baseQty;
+      document.getElementById('product-name').value    = itemData.productName;
+      document.getElementById('material-name').value   = itemData.materialName || '';
+      document.getElementById('base-qty').value        = itemData.baseQty;
+      document.getElementById('registrant-name').value = itemData.registrantName || '';
 
       document.getElementById('processes').innerHTML = '';
       document.getElementById('add-btn').disabled = false;
@@ -652,9 +669,10 @@
     function cancelEdit() { resetForm(); }
 
     function resetForm(resetEditId = true) {
-      document.getElementById('product-name').value  = '';
-      document.getElementById('material-name').value = '';
-      document.getElementById('base-qty').value      = '';
+      document.getElementById('product-name').value    = '';
+      document.getElementById('material-name').value   = '';
+      document.getElementById('base-qty').value        = '';
+      document.getElementById('registrant-name').value = '';
       document.getElementById('processes').innerHTML = '';
       document.getElementById('finished-products').innerHTML = '';
       document.getElementById('total').textContent = '— 円/kg';
@@ -662,7 +680,9 @@
       document.getElementById('yield-output').textContent = '—';
       document.getElementById('yield-loss').textContent   = '—';
       document.getElementById('yield-rate').textContent   = '—';
-      // processSeq / fpSeq はリセットしない（重複防止のため）
+      // リセット時は通し番号も0に戻す（新規登録フォームは毎回1から始まるため）
+      processSeq = 0;
+      fpSeq = 0;
       document.getElementById('add-btn').disabled = false;
       document.getElementById('edit-banner').classList.remove('show');
       document.getElementById('form-buttons').innerHTML =
@@ -671,17 +691,29 @@
       addProcess();
     }
 
-    // ===== 台帳 =====
     function renderLedger() {
       const list = document.getElementById('ledger-list');
-      const items = loadItems();
+      const keyword = (document.getElementById('search-input')?.value || '').trim().toLowerCase();
+      let items = loadItems();
+
+      // 検索フィルター
+      if (keyword) {
+        items = items.filter(item =>
+          (item.productName || '').toLowerCase().includes(keyword) ||
+          (item.materialName || '').toLowerCase().includes(keyword) ||
+          (item.registrantName || '').toLowerCase().includes(keyword)
+        );
+      }
+
       if (items.length === 0) {
-        list.innerHTML = '<div class="ledger-empty">まだ登録されていません</div>';
+        list.innerHTML = '<div class="ledger-empty">' + (keyword ? '該当する登録がありません' : 'まだ登録されていません') + '</div>';
         return;
       }
+
       list.innerHTML = items.map(item => {
         const yieldStr   = item.yieldRate != null ? '歩留まり：' + item.yieldRate.toFixed(1) + '%' : '';
         const updatedStr = item.updatedAt ? '　更新：' + item.updatedAt : '';
+        const registrantStr = item.registrantName ? item.registrantName : '—';
         return `
           <div class="ledger-item">
             <div class="ledger-item-left">
@@ -690,6 +722,7 @@
               <div class="ledger-cost">${item.totalCost.toFixed(2)} 円/kg</div>
               ${yieldStr ? '<div class="ledger-yield">' + yieldStr + '</div>' : ''}
               <div class="ledger-date">登録：${item.registeredAt}${updatedStr}</div>
+              <div class="ledger-registrant">登録者：${registrantStr}</div>
             </div>
             <div class="ledger-item-right">
               <button class="btn-view"      onclick="viewDetail('${item.id}')">詳細</button>
@@ -700,7 +733,6 @@
       }).join('');
     }
 
-    // ===== 詳細モーダル =====
     function viewDetail(id) {
       const items = loadItems();
       const item = items.find(i => i.id === id);
@@ -712,10 +744,10 @@
         const cost = item.baseQty > 0 ? (p.workers * p.hours * p.wage) / item.baseQty : 0;
         return `
           <div class="process-block" style="margin-bottom:0.5rem;">
-            <div style="font-size:14px;font-weight:500;margin-bottom:0.5rem;color:#cdd6f4;">
+            <div style="font-size:15px;font-weight:500;margin-bottom:0.5rem;color:#cdd6f4;">
               工程${i+1}${p.name ? '　／　' + p.name : ''}
             </div>
-            <div style="font-size:13px;color:#a6adc8;line-height:2;">
+            <div style="font-size:14px;color:#a6adc8;line-height:2;">
               作業者数：${p.workers}人　／　作業時間：${p.hours}h　／　基本賃金：${p.wage}円/h
             </div>
             <div class="cost-display">
@@ -724,30 +756,60 @@
           </div>`;
       }).join('');
 
-      const fpHTML = (item.finishedProducts || []).length > 0 ? `
-        <div class="section" style="margin-bottom:0.75rem;">
-          <h2>完成品</h2>
-          ${item.finishedProducts.map((fp, i) => `
-            <div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid #313244;font-size:14px;color:#cdd6f4;">
-              <span>${fp.name || '完成品' + (i+1)}</span>
-              <span>${fp.qty} kg</span>
-            </div>`).join('')}
-          <div class="yield-box" style="margin-top:0.75rem;">
-            <div class="yield-row">
-              <div class="yield-item"><div class="yield-label">投入量</div><div class="yield-value">${item.baseQty} kg</div></div>
-              <div class="yield-item"><div class="yield-label">完成品合計</div><div class="yield-value">${item.outputTotal.toFixed(1)} kg</div></div>
-              <div class="yield-item"><div class="yield-label">ロス</div><div class="yield-value">${(item.baseQty - item.outputTotal).toFixed(1)} kg</div></div>
-              <div class="yield-item"><div class="yield-label">歩留まり</div><div class="yield-value">${item.yieldRate != null ? item.yieldRate.toFixed(1) + ' %' : '—'}</div></div>
+      // 完成品率テーブル
+      let fpHTML = '';
+      if ((item.finishedProducts || []).length > 0) {
+        const baseQty = item.baseQty;
+        const fpRows = item.finishedProducts.map((fp, i) => {
+          const pct = baseQty > 0 ? ((fp.qty / baseQty) * 100).toFixed(1) : '—';
+          return `
+            <tr>
+              <td>${fp.name || '完成品' + (i+1)}</td>
+              <td>${fp.qty} kg</td>
+              <td class="fp-rate-pct">${pct}%</td>
+            </tr>`;
+        }).join('');
+
+        const loss = baseQty - item.outputTotal;
+        const lossPct = baseQty > 0 ? ((loss / baseQty) * 100).toFixed(1) : '—';
+
+        fpHTML = `
+          <div class="section" style="margin-bottom:0.75rem;">
+            <h2>完成品</h2>
+            <table class="fp-rate-table">
+              <thead>
+                <tr>
+                  <th>品名</th>
+                  <th>数量</th>
+                  <th>割合</th>
+                </tr>
+              </thead>
+              <tbody>
+                ${fpRows}
+                <tr class="fp-rate-loss">
+                  <td>ロス</td>
+                  <td>${loss.toFixed(1)} kg</td>
+                  <td class="fp-rate-pct">${lossPct}%</td>
+                </tr>
+              </tbody>
+            </table>
+            <div class="yield-box" style="margin-top:0.75rem;">
+              <div class="yield-row">
+                <div class="yield-item"><div class="yield-label">投入量</div><div class="yield-value">${item.baseQty} kg</div></div>
+                <div class="yield-item"><div class="yield-label">完成品合計</div><div class="yield-value">${item.outputTotal.toFixed(1)} kg</div></div>
+                <div class="yield-item"><div class="yield-label">ロス</div><div class="yield-value">${loss.toFixed(1)} kg</div></div>
+                <div class="yield-item"><div class="yield-label">歩留まり</div><div class="yield-value">${item.yieldRate != null ? item.yieldRate.toFixed(1) + ' %' : '—'}</div></div>
+              </div>
             </div>
-          </div>
-        </div>` : '';
+          </div>`;
+      }
 
       document.getElementById('modal-body').innerHTML = `
         <div class="section" style="margin-bottom:0.75rem;">
           <div class="label">原料名</div>
-          <div style="font-size:14px;margin-bottom:0.75rem;color:#cdd6f4;">${item.materialName || '—'}</div>
+          <div style="font-size:15px;margin-bottom:0.75rem;color:#cdd6f4;">${item.materialName || '—'}</div>
           <div class="label">基本原料数（投入量）</div>
-          <div style="font-size:14px;color:#cdd6f4;">${item.baseQty} kg</div>
+          <div style="font-size:15px;color:#cdd6f4;">${item.baseQty} kg</div>
         </div>
         ${processHTML}
         <div class="result">
@@ -767,7 +829,6 @@
       document.getElementById('modal-overlay').classList.remove('open');
     }
 
-    // ===== 削除 =====
     function deleteItem(id) {
       if (!confirm('この登録を削除しますか？')) return;
       const items = loadItems().filter(i => i.id !== id);
@@ -775,7 +836,6 @@
       renderLedger();
     }
 
-    // ===== トースト =====
     function showToast(msg) {
       const t = document.getElementById('toast');
       t.textContent = msg;
@@ -783,7 +843,6 @@
       setTimeout(() => t.classList.remove('show'), 2500);
     }
 
-    // ===== 初期化 =====
     addProcess();
   </script>
 
