@@ -113,11 +113,7 @@
       display: none;
     }
     .edit-banner.show { display: block; }
-
-    /* ===== 検索欄 ===== */
-    .search-box {
-      margin-bottom: 1rem;
-    }
+    .search-box { margin-bottom: 1rem; }
     .search-box input {
       width: 100%; padding: 9px 12px;
       border: 1px solid #45475a; border-radius: 8px;
@@ -126,8 +122,6 @@
     }
     .search-box input:focus { outline: 2px solid #89b4fa; }
     .search-box input::placeholder { color: #585b70; }
-
-    /* ===== 台帳 ===== */
     .ledger-empty { text-align: center; color: #45475a; padding: 2rem; font-size: 14px; }
     .ledger-item {
       background: #181825; border: 1px solid #313244;
@@ -204,8 +198,6 @@
     .pw-btn:hover { background: #b4d0fb; }
     .pw-error { font-size: 13px; color: #f38ba8; margin-top: 0.75rem; min-height: 18px; }
     .loading { text-align: center; color: #45475a; padding: 2rem; font-size: 14px; }
-
-    /* ===== 完成品率テーブル（ポップアップ用） ===== */
     .fp-rate-table { width: 100%; border-collapse: collapse; margin-top: 0.5rem; }
     .fp-rate-table th {
       font-size: 13px; color: #a6adc8; font-weight: 500;
@@ -349,7 +341,7 @@
 
   <script>
     const CORRECT_PASSWORD = '1234';
-    const STORAGE_KEY = 'costbreak-items';
+    const GAS_URL = 'https://script.google.com/macros/s/AKfycbwTHHmRC8bxBP3IasciPS02I02B4XaAKyX1NSosB_MIvZaz9cSGxxP2WUy6K4Tb7Byp/exec';
 
     function checkPassword() {
       const input = document.getElementById('pw-input').value;
@@ -367,16 +359,26 @@
       document.getElementById('pw-overlay').classList.add('hidden');
     }
 
-    function loadItems() {
-      try { return JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]'); }
-      catch(e) { return []; }
+    // ===== データ取得・送信 =====
+    async function loadItems() {
+      try {
+        const res = await fetch(GAS_URL);
+        const data = await res.json();
+        return Array.isArray(data) ? data : [];
+      } catch(e) {
+        console.error('データ取得エラー:', e);
+        return [];
+      }
     }
 
-    function saveItems(items) {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(items));
+    async function postToGAS(payload) {
+      const res = await fetch(GAS_URL, {
+        method: 'POST',
+        body: JSON.stringify(payload),
+      });
+      return await res.json();
     }
 
-    // processSeq / fpSeq は通し番号（削除しても戻さない＝ID重複防止）
     let processSeq = 0;
     let fpSeq = 0;
     let editingId = null;
@@ -547,7 +549,7 @@
       return processes;
     }
 
-    function registerProduct() {
+    async function registerProduct() {
       const productName = document.getElementById('product-name').value.trim();
       if (!productName) { alert('製品名を入力してください'); return; }
       const baseQty = parseFloat(document.getElementById('base-qty').value);
@@ -559,7 +561,6 @@
       const outputTotal = fps.reduce((s, f) => s + f.qty, 0);
       const yieldRate = baseQty > 0 && outputTotal > 0 ? (outputTotal / baseQty) * 100 : null;
 
-      const items = loadItems();
       const data = {
         id: Date.now().toString(),
         productName,
@@ -575,13 +576,21 @@
         updatedAt: null,
       };
 
-      items.unshift(data);
-      saveItems(items);
-      showToast('「' + productName + '」を登録しました！');
-      resetForm();
+      try {
+        showToast('登録中...');
+        const result = await postToGAS({ action: 'register', data });
+        if (result.ok) {
+          showToast('「' + productName + '」を登録しました！');
+          resetForm();
+        } else {
+          alert('登録に失敗しました：' + result.error);
+        }
+      } catch(e) {
+        alert('通信エラーが発生しました');
+      }
     }
 
-    function updateProduct() {
+    async function updateProduct() {
       const productName = document.getElementById('product-name').value.trim();
       if (!productName) { alert('製品名を入力してください'); return; }
       const baseQty = parseFloat(document.getElementById('base-qty').value);
@@ -593,12 +602,8 @@
       const outputTotal = fps.reduce((s, f) => s + f.qty, 0);
       const yieldRate = baseQty > 0 && outputTotal > 0 ? (outputTotal / baseQty) * 100 : null;
 
-      const items = loadItems();
-      const idx = items.findIndex(i => i.id === editingId);
-      if (idx === -1) { alert('更新対象が見つかりませんでした'); return; }
-
-      items[idx] = {
-        ...items[idx],
+      const data = {
+        id: editingId,
         productName,
         materialName: document.getElementById('material-name').value,
         baseQty,
@@ -608,16 +613,30 @@
         yieldRate,
         totalCost: calc(),
         registrantName,
+        registeredAt: (() => {
+          const items = [];
+          return new Date().toLocaleString('ja-JP');
+        })(),
         updatedAt: new Date().toLocaleString('ja-JP'),
       };
 
-      saveItems(items);
-      showToast('「' + productName + '」を更新しました！');
-      resetForm();
+      try {
+        showToast('更新中...');
+        const result = await postToGAS({ action: 'update', data });
+        if (result.ok) {
+          showToast('「' + productName + '」を更新しました！');
+          resetForm();
+        } else {
+          alert('更新に失敗しました：' + result.error);
+        }
+      } catch(e) {
+        alert('通信エラーが発生しました');
+      }
     }
 
-    function editItem(id) {
-      const items = loadItems();
+    async function editItem(id) {
+      showToast('データを読み込み中...');
+      const items = await loadItems();
       const itemData = items.find(i => i.id === id);
       if (!itemData) return;
 
@@ -680,7 +699,6 @@
       document.getElementById('yield-output').textContent = '—';
       document.getElementById('yield-loss').textContent   = '—';
       document.getElementById('yield-rate').textContent   = '—';
-      // リセット時は通し番号も0に戻す（新規登録フォームは毎回1から始まるため）
       processSeq = 0;
       fpSeq = 0;
       document.getElementById('add-btn').disabled = false;
@@ -691,12 +709,12 @@
       addProcess();
     }
 
-    function renderLedger() {
+    async function renderLedger() {
       const list = document.getElementById('ledger-list');
+      list.innerHTML = '<div class="loading">読み込み中...</div>';
       const keyword = (document.getElementById('search-input')?.value || '').trim().toLowerCase();
-      let items = loadItems();
+      let items = await loadItems();
 
-      // 検索フィルター
       if (keyword) {
         items = items.filter(item =>
           (item.productName || '').toLowerCase().includes(keyword) ||
@@ -733,8 +751,8 @@
       }).join('');
     }
 
-    function viewDetail(id) {
-      const items = loadItems();
+    async function viewDetail(id) {
+      const items = await loadItems();
       const item = items.find(i => i.id === id);
       if (!item) return;
 
@@ -756,7 +774,6 @@
           </div>`;
       }).join('');
 
-      // 完成品率テーブル
       let fpHTML = '';
       if ((item.finishedProducts || []).length > 0) {
         const baseQty = item.baseQty;
@@ -778,11 +795,7 @@
             <h2>完成品</h2>
             <table class="fp-rate-table">
               <thead>
-                <tr>
-                  <th>品名</th>
-                  <th>数量</th>
-                  <th>割合</th>
-                </tr>
+                <tr><th>品名</th><th>数量</th><th>割合</th></tr>
               </thead>
               <tbody>
                 ${fpRows}
@@ -829,11 +842,20 @@
       document.getElementById('modal-overlay').classList.remove('open');
     }
 
-    function deleteItem(id) {
+    async function deleteItem(id) {
       if (!confirm('この登録を削除しますか？')) return;
-      const items = loadItems().filter(i => i.id !== id);
-      saveItems(items);
-      renderLedger();
+      try {
+        showToast('削除中...');
+        const result = await postToGAS({ action: 'delete', id });
+        if (result.ok) {
+          showToast('削除しました');
+          renderLedger();
+        } else {
+          alert('削除に失敗しました：' + result.error);
+        }
+      } catch(e) {
+        alert('通信エラーが発生しました');
+      }
     }
 
     function showToast(msg) {
