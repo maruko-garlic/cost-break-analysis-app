@@ -340,18 +340,23 @@
   <div class="toast" id="toast"></div>
 
   <script>
-    const CORRECT_PASSWORD = '1234';
+    
     const GAS_URL = 'https://script.google.com/macros/s/AKfycbwTHHmRC8bxBP3IasciPS02I02B4XaAKyX1NSosB_MIvZaz9cSGxxP2WUy6K4Tb7Byp/exec';
 
-    function checkPassword() {
+    async function checkPassword() {
       const input = document.getElementById('pw-input').value;
-      if (input === CORRECT_PASSWORD) {
-        document.getElementById('pw-overlay').classList.add('hidden');
-        sessionStorage.setItem('cba-auth', '1');
-      } else {
-        document.getElementById('pw-error').textContent = 'パスワードが違います';
-        document.getElementById('pw-input').value = '';
-        document.getElementById('pw-input').focus();
+      try {
+        const result = await postToGAS({ action: 'login', password: input });
+        if (result.ok) {
+          document.getElementById('pw-overlay').classList.add('hidden');
+          sessionStorage.setItem('cba-auth', '1');
+        } else {
+          document.getElementById('pw-error').textContent = 'パスワードが違います';
+          document.getElementById('pw-input').value = '';
+          document.getElementById('pw-input').focus();
+        }
+      } catch(e) {
+        document.getElementById('pw-error').textContent = '通信エラーが発生しました';
       }
     }
 
