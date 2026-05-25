@@ -618,10 +618,7 @@
         yieldRate,
         totalCost: calc(),
         registrantName,
-        registeredAt: (() => {
-          const items = [];
-          return new Date().toLocaleString('ja-JP');
-        })(),
+        registeredAt: new Date().toLocaleString('ja-JP'),
         updatedAt: new Date().toLocaleString('ja-JP'),
       };
 
