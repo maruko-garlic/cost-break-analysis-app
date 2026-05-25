@@ -627,7 +627,7 @@
 
       try {
         showToast('更新中...');
-        const result = await postToGAS({ action: 'update', data });
+        const result = await postToGAS({ action: 'delete', id: String(id) });
         if (result.ok) {
           showToast('「' + productName + '」を更新しました！');
           resetForm();
@@ -642,7 +642,7 @@
     async function editItem(id) {
       showToast('データを読み込み中...');
       const items = await loadItems();
-      const itemData = items.find(i => i.id === id);
+      const itemData = items.find(i => String(i.id) === String(id));
       if (!itemData) return;
 
       document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
