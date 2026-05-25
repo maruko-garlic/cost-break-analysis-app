@@ -624,7 +624,7 @@
 
       try {
         showToast('更新中...');
-        const result = await postToGAS({ action: 'delete', id: String(id) });
+        const result = await postToGAS({ action: 'update', data });
         if (result.ok) {
           showToast('「' + productName + '」を更新しました！');
           resetForm();
