@@ -1,217 +1,661 @@
 <!DOCTYPE html>
 <html lang="ja">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Cost Break Analysis</title>
   <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
     body {
       font-family: 'Hiragino Kaku Gothic ProN', 'Meiryo', sans-serif;
       background: #1e1e2e;
       color: #cdd6f4;
       font-size: 17px;
     }
+
     .header {
-      background: #181825; color: #cdd6f4;
+      background: #181825;
+      color: #cdd6f4;
       padding: 1rem 1.5rem;
-      display: flex; justify-content: space-between; align-items: center;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
       border-bottom: 1px solid #313244;
     }
-    .header h1 { font-size: 17px; font-weight: 500; }
-    .tab-buttons { display: flex; gap: 8px; }
+
+    .header h1 {
+      font-size: 17px;
+      font-weight: 500;
+    }
+
+    .tab-buttons {
+      display: flex;
+      gap: 8px;
+    }
+
     .tab-btn {
-      border: 1px solid #45475a; background: transparent; color: #a6adc8;
-      border-radius: 6px; padding: 5px 14px; font-size: 13px;
-      cursor: pointer; font-family: inherit;
-    }
-    .tab-btn.active { background: #cdd6f4; color: #1e1e2e; border-color: #cdd6f4; }
-    .tab-btn:hover { background: #313244; color: #cdd6f4; }
-    .tab-btn.active:hover { background: #cdd6f4; color: #1e1e2e; }
-    .content { padding: 1.5rem 1rem; max-width: 680px; margin: 0 auto; }
-    .screen { display: none; }
-    .screen.active { display: block; }
-    .section {
-      background: #181825; border: 1px solid #313244;
-      border-radius: 10px; padding: 1rem 1.25rem; margin-bottom: 1rem;
-    }
-    h2 { font-size: 16px; font-weight: 500; margin-bottom: 1rem; color: #cdd6f4; }
-    .note { font-size: 13px; color: #6c7086; margin-bottom: 1.5rem; }
-    .label { font-size: 14px; color: #bac2de; margin-bottom: 4px; font-weight: 500; }
-    .input-row { display: flex; align-items: center; gap: 8px; margin-bottom: 0.75rem; }
-    .unit { font-size: 14px; color: #a6adc8; }
-    input[type="text"], input[type="number"] {
-      padding: 8px 10px; border: 1px solid #45475a; border-radius: 6px;
-      font-size: 15px; background: #2a2a3e; color: #cdd6f4; font-family: inherit;
-    }
-    input[type="text"] { width: 100%; }
-    input[type="number"] { width: 150px; }
-    input:focus { outline: 2px solid #89b4fa; }
-    input::placeholder { color: #9099b8; }
-    .process-block {
-      background: #24273a; border: 1px solid #313244;
-      border-radius: 8px; padding: 1rem; margin-bottom: 0.75rem;
-    }
-    .process-title {
-      display: flex; justify-content: space-between; align-items: center;
-      font-size: 15px; font-weight: 500; margin-bottom: 0.75rem; color: #cdd6f4;
-    }
-    .process-name-display { font-size: 14px; color: #a6adc8; font-weight: 400; }
-    .cost-display {
-      font-size: 13px; color: #a6adc8;
-      margin-top: 0.5rem; padding-top: 0.5rem; border-top: 1px solid #313244;
-    }
-    .cost-value { font-size: 15px; font-weight: 500; color: #a6e3a1; }
-    .product-block {
-      background: #1e2a3a; border: 1px solid #2a4060;
-      border-radius: 8px; padding: 1rem; margin-bottom: 0.75rem;
-    }
-    .product-title {
-      display: flex; justify-content: space-between; align-items: center;
-      font-size: 15px; font-weight: 500; margin-bottom: 0.75rem; color: #89b4fa;
-    }
-    .yield-box {
-      background: #2a2520; border: 1px solid #4a3f20;
-      border-radius: 8px; padding: 1rem; margin-bottom: 1rem;
-    }
-    .yield-label { font-size: 13px; color: #a6adc8; margin-bottom: 4px; }
-    .yield-value { font-size: 22px; font-weight: 500; color: #f9e2af; }
-    .yield-row { display: flex; gap: 1rem; flex-wrap: wrap; }
-    .yield-item { flex: 1; min-width: 120px; }
-    button {
-      border: 1px solid #45475a; background: #24273a; border-radius: 6px;
-      padding: 6px 14px; font-size: 13px; cursor: pointer;
-      color: #cdd6f4; font-family: inherit;
-    }
-    button:hover { background: #313244; }
-    button:disabled { opacity: 0.4; cursor: not-allowed; }
-    .btn-add { margin-bottom: 1rem; }
-    .btn-remove { font-size: 12px; padding: 3px 10px; color: #6c7086; }
-    .btn-register {
-      background: #89b4fa; color: #1e1e2e; border-color: #89b4fa;
-      padding: 10px 24px; font-size: 14px; width: 100%; margin-top: 0.5rem;
-      font-weight: 500;
-    }
-    .btn-register:hover { background: #b4d0fb; }
-    .btn-update {
-      background: #a6e3a1; color: #1e1e2e; border-color: #a6e3a1;
-      padding: 10px 24px; font-size: 14px; width: 100%; margin-top: 0.5rem;
-      font-weight: 500;
-    }
-    .btn-update:hover { background: #c5f0c2; }
-    .btn-cancel {
-      padding: 10px 24px; font-size: 14px; width: 100%; margin-top: 0.5rem;
-    }
-    .divider { border: none; border-top: 1px solid #313244; margin: 1rem 0; }
-    .result { background: #24273a; border-radius: 8px; padding: 1rem; margin-bottom: 1rem; border: 1px solid #313244; }
-    .result-label { font-size: 13px; color: #a6adc8; margin-bottom: 4px; }
-    .result-value { font-size: 28px; font-weight: 500; color: #a6e3a1; }
-    .edit-banner {
-      background: #2a2520; border: 1px solid #4a3f20;
-      border-radius: 8px; padding: 0.75rem 1rem;
-      margin-bottom: 1rem; font-size: 14px; color: #f9e2af;
-      display: none;
-    }
-    .edit-banner.show { display: block; }
-    .search-box { margin-bottom: 1rem; }
-    .search-box input {
-      width: 100%; padding: 9px 12px;
-      border: 1px solid #45475a; border-radius: 8px;
-      font-size: 15px; background: #24273a; color: #cdd6f4;
+      border: 1px solid #45475a;
+      background: transparent;
+      color: #a6adc8;
+      border-radius: 6px;
+      padding: 5px 14px;
+      font-size: 13px;
+      cursor: pointer;
       font-family: inherit;
     }
-    .search-box input:focus { outline: 2px solid #89b4fa; }
-    .search-box input::placeholder { color: #585b70; }
-    .ledger-empty { text-align: center; color: #45475a; padding: 2rem; font-size: 14px; }
-    .ledger-item {
-      background: #181825; border: 1px solid #313244;
-      border-radius: 10px; padding: 1rem 1.25rem; margin-bottom: 0.75rem;
-      display: flex; justify-content: space-between; align-items: center;
+
+    .tab-btn.active {
+      background: #cdd6f4;
+      color: #1e1e2e;
+      border-color: #cdd6f4;
     }
-    .ledger-item-left { flex: 1; }
-    .ledger-product-name { font-size: 16px; font-weight: 500; margin-bottom: 3px; color: #cdd6f4; }
-    .ledger-meta { font-size: 13px; color: #a6adc8; margin-bottom: 3px; }
-    .ledger-cost { font-size: 18px; font-weight: 500; color: #a6e3a1; }
-    .ledger-yield { font-size: 13px; color: #f9e2af; margin-top: 2px; }
-    .ledger-date { font-size: 13px; color: #6c7086; margin-top: 3px; }
-    .ledger-registrant { font-size: 13px; color: #89b4fa; margin-top: 2px; }
-    .ledger-item-right { display: flex; gap: 6px; flex-direction: column; align-items: flex-end; }
-    .btn-view { font-size: 12px; padding: 4px 12px; }
-    .btn-edit-item { font-size: 12px; padding: 4px 12px; color: #a6e3a1; border-color: #2a4a30; }
-    .btn-edit-item:hover { background: #1e3025; }
-    .btn-delete { font-size: 12px; padding: 4px 12px; color: #f38ba8; border-color: #4a2030; }
-    .btn-delete:hover { background: #2a1020; }
-    .modal-overlay {
-      display: none; position: fixed;
-      top: 0; left: 0; right: 0; bottom: 0;
-      background: rgba(0,0,0,0.6); z-index: 100;
-      justify-content: center; align-items: flex-start;
-      padding: 2rem 1rem; overflow-y: auto;
+
+    .tab-btn:hover {
+      background: #313244;
+      color: #cdd6f4;
     }
-    .modal-overlay.open { display: flex; }
-    .modal {
-      background: #1e1e2e; border: 1px solid #313244; border-radius: 12px;
-      padding: 1.5rem; width: 100%; max-width: 600px;
+
+    .tab-btn.active:hover {
+      background: #cdd6f4;
+      color: #1e1e2e;
     }
-    .modal-header {
-      display: flex; justify-content: space-between; align-items: center;
+
+    .content {
+      padding: 1.5rem 1rem;
+      max-width: 680px;
+      margin: 0 auto;
+    }
+
+    .screen {
+      display: none;
+    }
+
+    .screen.active {
+      display: block;
+    }
+
+    .section {
+      background: #181825;
+      border: 1px solid #313244;
+      border-radius: 10px;
+      padding: 1rem 1.25rem;
       margin-bottom: 1rem;
     }
-    .modal-title { font-size: 16px; font-weight: 500; color: #cdd6f4; }
-    .btn-close { font-size: 18px; padding: 2px 10px; border: none; background: none; cursor: pointer; color: #6c7086; }
+
+    h2 {
+      font-size: 16px;
+      font-weight: 500;
+      margin-bottom: 1rem;
+      color: #cdd6f4;
+    }
+
+    .note {
+      font-size: 13px;
+      color: #6c7086;
+      margin-bottom: 1.5rem;
+    }
+
+    .label {
+      font-size: 14px;
+      color: #bac2de;
+      margin-bottom: 4px;
+      font-weight: 500;
+    }
+
+    .input-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 0.75rem;
+    }
+
+    .unit {
+      font-size: 14px;
+      color: #a6adc8;
+    }
+
+    input[type="text"],
+    input[type="number"] {
+      padding: 8px 10px;
+      border: 1px solid #45475a;
+      border-radius: 6px;
+      font-size: 15px;
+      background: #2a2a3e;
+      color: #cdd6f4;
+      font-family: inherit;
+    }
+
+    input[type="text"] {
+      width: 100%;
+    }
+
+    input[type="number"] {
+      width: 150px;
+    }
+
+    input:focus {
+      outline: 2px solid #89b4fa;
+    }
+
+    input::placeholder {
+      color: #9099b8;
+    }
+
+    .process-block {
+      background: #24273a;
+      border: 1px solid #313244;
+      border-radius: 8px;
+      padding: 1rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .process-title {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 15px;
+      font-weight: 500;
+      margin-bottom: 0.75rem;
+      color: #cdd6f4;
+    }
+
+    .process-name-display {
+      font-size: 14px;
+      color: #a6adc8;
+      font-weight: 400;
+    }
+
+    .cost-display {
+      font-size: 13px;
+      color: #a6adc8;
+      margin-top: 0.5rem;
+      padding-top: 0.5rem;
+      border-top: 1px solid #313244;
+    }
+
+    .cost-value {
+      font-size: 15px;
+      font-weight: 500;
+      color: #a6e3a1;
+    }
+
+    .product-block {
+      background: #1e2a3a;
+      border: 1px solid #2a4060;
+      border-radius: 8px;
+      padding: 1rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .product-title {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 15px;
+      font-weight: 500;
+      margin-bottom: 0.75rem;
+      color: #89b4fa;
+    }
+
+    .yield-box {
+      background: #2a2520;
+      border: 1px solid #4a3f20;
+      border-radius: 8px;
+      padding: 1rem;
+      margin-bottom: 1rem;
+    }
+
+    .yield-label {
+      font-size: 13px;
+      color: #a6adc8;
+      margin-bottom: 4px;
+    }
+
+    .yield-value {
+      font-size: 22px;
+      font-weight: 500;
+      color: #f9e2af;
+    }
+
+    .yield-row {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .yield-item {
+      flex: 1;
+      min-width: 120px;
+    }
+
+    button {
+      border: 1px solid #45475a;
+      background: #24273a;
+      border-radius: 6px;
+      padding: 6px 14px;
+      font-size: 13px;
+      cursor: pointer;
+      color: #cdd6f4;
+      font-family: inherit;
+    }
+
+    button:hover {
+      background: #313244;
+    }
+
+    button:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+    }
+
+    .btn-add {
+      margin-bottom: 1rem;
+    }
+
+    .btn-remove {
+      font-size: 12px;
+      padding: 3px 10px;
+      color: #6c7086;
+    }
+
+    .btn-register {
+      background: #89b4fa;
+      color: #1e1e2e;
+      border-color: #89b4fa;
+      padding: 10px 24px;
+      font-size: 14px;
+      width: 100%;
+      margin-top: 0.5rem;
+      font-weight: 500;
+    }
+
+    .btn-register:hover {
+      background: #b4d0fb;
+    }
+
+    .btn-update {
+      background: #a6e3a1;
+      color: #1e1e2e;
+      border-color: #a6e3a1;
+      padding: 10px 24px;
+      font-size: 14px;
+      width: 100%;
+      margin-top: 0.5rem;
+      font-weight: 500;
+    }
+
+    .btn-update:hover {
+      background: #c5f0c2;
+    }
+
+    .btn-cancel {
+      padding: 10px 24px;
+      font-size: 14px;
+      width: 100%;
+      margin-top: 0.5rem;
+    }
+
+    .divider {
+      border: none;
+      border-top: 1px solid #313244;
+      margin: 1rem 0;
+    }
+
+    .result {
+      background: #24273a;
+      border-radius: 8px;
+      padding: 1rem;
+      margin-bottom: 1rem;
+      border: 1px solid #313244;
+    }
+
+    .result-label {
+      font-size: 13px;
+      color: #a6adc8;
+      margin-bottom: 4px;
+    }
+
+    .result-value {
+      font-size: 28px;
+      font-weight: 500;
+      color: #a6e3a1;
+    }
+
+    .edit-banner {
+      background: #2a2520;
+      border: 1px solid #4a3f20;
+      border-radius: 8px;
+      padding: 0.75rem 1rem;
+      margin-bottom: 1rem;
+      font-size: 14px;
+      color: #f9e2af;
+      display: none;
+    }
+
+    .edit-banner.show {
+      display: block;
+    }
+
+    .search-box {
+      margin-bottom: 1rem;
+    }
+
+    .search-box input {
+      width: 100%;
+      padding: 9px 12px;
+      border: 1px solid #45475a;
+      border-radius: 8px;
+      font-size: 15px;
+      background: #24273a;
+      color: #cdd6f4;
+      font-family: inherit;
+    }
+
+    .search-box input:focus {
+      outline: 2px solid #89b4fa;
+    }
+
+    .search-box input::placeholder {
+      color: #585b70;
+    }
+
+    .ledger-empty {
+      text-align: center;
+      color: #45475a;
+      padding: 2rem;
+      font-size: 14px;
+    }
+
+    .ledger-item {
+      background: #181825;
+      border: 1px solid #313244;
+      border-radius: 10px;
+      padding: 1rem 1.25rem;
+      margin-bottom: 0.75rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .ledger-item-left {
+      flex: 1;
+    }
+
+    .ledger-product-name {
+      font-size: 16px;
+      font-weight: 500;
+      margin-bottom: 3px;
+      color: #cdd6f4;
+    }
+
+    .ledger-meta {
+      font-size: 13px;
+      color: #a6adc8;
+      margin-bottom: 3px;
+    }
+
+    .ledger-cost {
+      font-size: 18px;
+      font-weight: 500;
+      color: #a6e3a1;
+    }
+
+    .ledger-yield {
+      font-size: 13px;
+      color: #f9e2af;
+      margin-top: 2px;
+    }
+
+    .ledger-date {
+      font-size: 13px;
+      color: #6c7086;
+      margin-top: 3px;
+    }
+
+    .ledger-registrant {
+      font-size: 13px;
+      color: #89b4fa;
+      margin-top: 2px;
+    }
+
+    .ledger-item-right {
+      display: flex;
+      gap: 6px;
+      flex-direction: column;
+      align-items: flex-end;
+    }
+
+    .btn-view {
+      font-size: 12px;
+      padding: 4px 12px;
+    }
+
+    .btn-edit-item {
+      font-size: 12px;
+      padding: 4px 12px;
+      color: #a6e3a1;
+      border-color: #2a4a30;
+    }
+
+    .btn-edit-item:hover {
+      background: #1e3025;
+    }
+
+    .btn-delete {
+      font-size: 12px;
+      padding: 4px 12px;
+      color: #f38ba8;
+      border-color: #4a2030;
+    }
+
+    .btn-delete:hover {
+      background: #2a1020;
+    }
+
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.6);
+      z-index: 100;
+      justify-content: center;
+      align-items: flex-start;
+      padding: 2rem 1rem;
+      overflow-y: auto;
+    }
+
+    .modal-overlay.open {
+      display: flex;
+    }
+
+    .modal {
+      background: #1e1e2e;
+      border: 1px solid #313244;
+      border-radius: 12px;
+      padding: 1.5rem;
+      width: 100%;
+      max-width: 600px;
+    }
+
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1rem;
+    }
+
+    .modal-title {
+      font-size: 16px;
+      font-weight: 500;
+      color: #cdd6f4;
+    }
+
+    .btn-close {
+      font-size: 18px;
+      padding: 2px 10px;
+      border: none;
+      background: none;
+      cursor: pointer;
+      color: #6c7086;
+    }
+
     .toast {
-      position: fixed; bottom: 2rem; left: 50%; transform: translateX(-50%);
-      background: #a6e3a1; color: #1e1e2e; padding: 10px 24px;
-      border-radius: 8px; font-size: 14px; font-weight: 500;
-      opacity: 0; transition: opacity 0.3s; z-index: 200;
-      pointer-events: none; white-space: nowrap;
+      position: fixed;
+      bottom: 2rem;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #a6e3a1;
+      color: #1e1e2e;
+      padding: 10px 24px;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 500;
+      opacity: 0;
+      transition: opacity 0.3s;
+      z-index: 200;
+      pointer-events: none;
+      white-space: nowrap;
     }
-    .toast.show { opacity: 1; }
+
+    .toast.show {
+      opacity: 1;
+    }
+
     .pw-overlay {
-      display: flex; position: fixed;
-      top: 0; left: 0; right: 0; bottom: 0;
-      background: #1e1e2e; z-index: 300;
-      justify-content: center; align-items: center;
+      display: flex;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: #1e1e2e;
+      z-index: 300;
+      justify-content: center;
+      align-items: center;
     }
-    .pw-overlay.hidden { display: none; }
+
+    .pw-overlay.hidden {
+      display: none;
+    }
+
     .pw-box {
-      background: #181825; border: 1px solid #313244;
-      border-radius: 14px; padding: 2.5rem 2rem;
-      width: 100%; max-width: 340px; text-align: center;
+      background: #181825;
+      border: 1px solid #313244;
+      border-radius: 14px;
+      padding: 2.5rem 2rem;
+      width: 100%;
+      max-width: 340px;
+      text-align: center;
     }
-    .pw-title { font-size: 17px; font-weight: 500; color: #cdd6f4; margin-bottom: 0.4rem; }
-    .pw-sub { font-size: 13px; color: #6c7086; margin-bottom: 1.75rem; }
+
+    .pw-title {
+      font-size: 17px;
+      font-weight: 500;
+      color: #cdd6f4;
+      margin-bottom: 0.4rem;
+    }
+
+    .pw-sub {
+      font-size: 13px;
+      color: #6c7086;
+      margin-bottom: 1.75rem;
+    }
+
     .pw-input {
-      width: 100%; padding: 10px 14px;
-      border: 1px solid #45475a; border-radius: 8px;
-      font-size: 16px; background: #2a2a3e; color: #cdd6f4;
-      text-align: center; letter-spacing: 4px;
-      font-family: inherit; margin-bottom: 1rem;
+      width: 100%;
+      padding: 10px 14px;
+      border: 1px solid #45475a;
+      border-radius: 8px;
+      font-size: 16px;
+      background: #2a2a3e;
+      color: #cdd6f4;
+      text-align: center;
+      letter-spacing: 4px;
+      font-family: inherit;
+      margin-bottom: 1rem;
     }
-    .pw-input:focus { outline: 2px solid #89b4fa; }
+
+    .pw-input:focus {
+      outline: 2px solid #89b4fa;
+    }
+
     .pw-btn {
-      width: 100%; background: #89b4fa; color: #1e1e2e;
-      border: none; border-radius: 8px;
-      padding: 11px; font-size: 14px; cursor: pointer;
-      font-family: inherit; font-weight: 500;
+      width: 100%;
+      background: #89b4fa;
+      color: #1e1e2e;
+      border: none;
+      border-radius: 8px;
+      padding: 11px;
+      font-size: 14px;
+      cursor: pointer;
+      font-family: inherit;
+      font-weight: 500;
     }
-    .pw-btn:hover { background: #b4d0fb; }
-    .pw-error { font-size: 13px; color: #f38ba8; margin-top: 0.75rem; min-height: 18px; }
-    .loading { text-align: center; color: #45475a; padding: 2rem; font-size: 14px; }
-    .fp-rate-table { width: 100%; border-collapse: collapse; margin-top: 0.5rem; }
+
+    .pw-btn:hover {
+      background: #b4d0fb;
+    }
+
+    .pw-error {
+      font-size: 13px;
+      color: #f38ba8;
+      margin-top: 0.75rem;
+      min-height: 18px;
+    }
+
+    .loading {
+      text-align: center;
+      color: #45475a;
+      padding: 2rem;
+      font-size: 14px;
+    }
+
+    .fp-rate-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 0.5rem;
+    }
+
     .fp-rate-table th {
-      font-size: 13px; color: #a6adc8; font-weight: 500;
-      padding: 6px 8px; border-bottom: 1px solid #313244; text-align: left;
+      font-size: 13px;
+      color: #a6adc8;
+      font-weight: 500;
+      padding: 6px 8px;
+      border-bottom: 1px solid #313244;
+      text-align: left;
     }
+
     .fp-rate-table td {
-      font-size: 14px; color: #cdd6f4;
-      padding: 6px 8px; border-bottom: 1px solid #1e1e2e;
+      font-size: 14px;
+      color: #cdd6f4;
+      padding: 6px 8px;
+      border-bottom: 1px solid #1e1e2e;
     }
-    .fp-rate-table tr:last-child td { border-bottom: none; }
-    .fp-rate-pct { color: #f9e2af; font-weight: 500; }
-    .fp-rate-loss td { color: #f38ba8; }
+
+    .fp-rate-table tr:last-child td {
+      border-bottom: none;
+    }
+
+    .fp-rate-pct {
+      color: #f9e2af;
+      font-weight: 500;
+    }
+
+    .fp-rate-loss td {
+      color: #f38ba8;
+    }
   </style>
 </head>
+
 <body>
 
   <div class="pw-overlay" id="pw-overlay">
@@ -334,14 +778,15 @@
         <button class="btn-close" onclick="closeModalDirect()">✕</button>
       </div>
       <div id="modal-body"></div>
-<button class="btn-cancel" style="width:100%;margin-top:1rem;padding:12px;font-size:16px;" onclick="closeModalDirect()">閉じる</button>
+      <button class="btn-cancel" style="width:100%;margin-top:1rem;padding:12px;font-size:16px;"
+        onclick="closeModalDirect()">閉じる</button>
     </div>
   </div>
 
   <div class="toast" id="toast"></div>
 
   <script>
-    
+
     const GAS_URL = 'https://script.google.com/macros/s/AKfycbwTHHmRC8bxBP3IasciPS02I02B4XaAKyX1NSosB_MIvZaz9cSGxxP2WUy6K4Tb7Byp/exec';
 
     async function checkPassword() {
@@ -351,18 +796,20 @@
         if (result.ok) {
           document.getElementById('pw-overlay').classList.add('hidden');
           sessionStorage.setItem('cba-auth', '1');
+          showScreen('ledger');
         } else {
           document.getElementById('pw-error').textContent = 'パスワードが違います';
           document.getElementById('pw-input').value = '';
           document.getElementById('pw-input').focus();
         }
-      } catch(e) {
+      } catch (e) {
         document.getElementById('pw-error').textContent = '通信エラーが発生しました';
       }
     }
 
     if (sessionStorage.getItem('cba-auth') === '1') {
       document.getElementById('pw-overlay').classList.add('hidden');
+      showScreen('ledger');
     }
 
     // ===== データ取得・送信 =====
@@ -371,7 +818,7 @@
         const res = await fetch(GAS_URL);
         const data = await res.json();
         return Array.isArray(data) ? data : [];
-      } catch(e) {
+      } catch (e) {
         console.error('データ取得エラー:', e);
         return [];
       }
@@ -393,7 +840,14 @@
       document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
       document.getElementById('screen-' + name).classList.add('active');
       document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
+      if (btn) {
+        btn.classList.add('active');
+      } else {
+        const tabBtn = name === 'ledger'
+          ? document.querySelectorAll('.tab-btn')[1]
+          : document.querySelectorAll('.tab-btn')[0];
+        tabBtn.classList.add('active');
+      }
       if (name === 'ledger') renderLedger();
     }
 
@@ -491,9 +945,9 @@
       let total = 0;
       document.querySelectorAll('.process-block').forEach(block => {
         const id = block.id.split('-')[1];
-        const w  = parseFloat(document.getElementById('workers-' + id)?.value);
-        const h  = parseFloat(document.getElementById('hours-'   + id)?.value);
-        const wg = parseFloat(document.getElementById('wage-'    + id)?.value);
+        const w = parseFloat(document.getElementById('workers-' + id)?.value);
+        const h = parseFloat(document.getElementById('hours-' + id)?.value);
+        const wg = parseFloat(document.getElementById('wage-' + id)?.value);
         const costEl = document.getElementById('cost-' + id);
         if (!isNaN(w) && w > 0 && !isNaN(h) && h > 0 && !isNaN(wg) && wg > 0 && !isNaN(baseQty) && baseQty > 0) {
           const cost = (w * h * wg) / baseQty;
@@ -516,7 +970,7 @@
         const qty = parseFloat(document.getElementById('fp-qty-' + id)?.value) || 0;
         outputTotal += qty;
       });
-      document.getElementById('yield-input').textContent  = baseQty > 0 ? baseQty.toFixed(1) + ' kg' : '—';
+      document.getElementById('yield-input').textContent = baseQty > 0 ? baseQty.toFixed(1) + ' kg' : '—';
       document.getElementById('yield-output').textContent = outputTotal > 0 ? outputTotal.toFixed(1) + ' kg' : '—';
       if (baseQty > 0 && outputTotal > 0) {
         const loss = baseQty - outputTotal;
@@ -535,7 +989,7 @@
         const id = block.id.split('-')[1];
         fps.push({
           name: document.getElementById('fp-name-' + id)?.value || '',
-          qty:  parseFloat(document.getElementById('fp-qty-'  + id)?.value) || 0,
+          qty: parseFloat(document.getElementById('fp-qty-' + id)?.value) || 0,
         });
       });
       return fps;
@@ -546,10 +1000,10 @@
       document.querySelectorAll('.process-block').forEach(block => {
         const id = block.id.split('-')[1];
         processes.push({
-          name:    document.getElementById('process-name-' + id)?.value || '',
+          name: document.getElementById('process-name-' + id)?.value || '',
           workers: parseFloat(document.getElementById('workers-' + id)?.value) || 0,
-          hours:   parseFloat(document.getElementById('hours-'   + id)?.value) || 0,
-          wage:    parseFloat(document.getElementById('wage-'    + id)?.value) || 0,
+          hours: parseFloat(document.getElementById('hours-' + id)?.value) || 0,
+          wage: parseFloat(document.getElementById('wage-' + id)?.value) || 0,
         });
       });
       return processes;
@@ -591,7 +1045,7 @@
         } else {
           alert('登録に失敗しました：' + result.error);
         }
-      } catch(e) {
+      } catch (e) {
         alert('通信エラーが発生しました');
       }
     }
@@ -632,7 +1086,7 @@
         } else {
           alert('更新に失敗しました：' + result.error);
         }
-      } catch(e) {
+      } catch (e) {
         alert('通信エラーが発生しました');
       }
     }
@@ -651,9 +1105,9 @@
       resetForm(false);
       editingId = id;
 
-      document.getElementById('product-name').value    = itemData.productName;
-      document.getElementById('material-name').value   = itemData.materialName || '';
-      document.getElementById('base-qty').value        = itemData.baseQty;
+      document.getElementById('product-name').value = itemData.productName;
+      document.getElementById('material-name').value = itemData.materialName || '';
+      document.getElementById('base-qty').value = itemData.baseQty;
       document.getElementById('registrant-name').value = itemData.registrantName || '';
 
       document.getElementById('processes').innerHTML = '';
@@ -663,10 +1117,10 @@
         const lastBlock = document.querySelector('#processes .process-block:last-child');
         const pid = lastBlock.id.split('-')[1];
         document.getElementById('process-name-' + pid).value = p.name;
-        document.getElementById('name-display-'  + pid).textContent = p.name ? '／ ' + p.name : '';
+        document.getElementById('name-display-' + pid).textContent = p.name ? '／ ' + p.name : '';
         document.getElementById('workers-' + pid).value = p.workers;
-        document.getElementById('hours-'   + pid).value = p.hours;
-        document.getElementById('wage-'    + pid).value = p.wage;
+        document.getElementById('hours-' + pid).value = p.hours;
+        document.getElementById('wage-' + pid).value = p.wage;
       });
 
       document.getElementById('finished-products').innerHTML = '';
@@ -675,7 +1129,7 @@
         const lastFP = document.querySelector('#finished-products .product-block:last-child');
         const fid = lastFP.id.split('-')[1];
         document.getElementById('fp-name-' + fid).value = fp.name;
-        document.getElementById('fp-qty-'  + fid).value = fp.qty;
+        document.getElementById('fp-qty-' + fid).value = fp.qty;
       });
 
       calc();
@@ -691,17 +1145,17 @@
     function cancelEdit() { resetForm(); }
 
     function resetForm(resetEditId = true) {
-      document.getElementById('product-name').value    = '';
-      document.getElementById('material-name').value   = '';
-      document.getElementById('base-qty').value        = '';
+      document.getElementById('product-name').value = '';
+      document.getElementById('material-name').value = '';
+      document.getElementById('base-qty').value = '';
       document.getElementById('registrant-name').value = '';
       document.getElementById('processes').innerHTML = '';
       document.getElementById('finished-products').innerHTML = '';
       document.getElementById('total').textContent = '— 円/kg';
-      document.getElementById('yield-input').textContent  = '—';
+      document.getElementById('yield-input').textContent = '—';
       document.getElementById('yield-output').textContent = '—';
-      document.getElementById('yield-loss').textContent   = '—';
-      document.getElementById('yield-rate').textContent   = '—';
+      document.getElementById('yield-loss').textContent = '—';
+      document.getElementById('yield-rate').textContent = '—';
       processSeq = 0;
       fpSeq = 0;
       document.getElementById('add-btn').disabled = false;
@@ -732,7 +1186,7 @@
       }
 
       list.innerHTML = items.map(item => {
-        const yieldStr   = item.yieldRate != null ? '歩留まり：' + item.yieldRate.toFixed(1) + '%' : '';
+        const yieldStr = item.yieldRate != null ? '歩留まり：' + item.yieldRate.toFixed(1) + '%' : '';
         const updatedStr = item.updatedAt ? '　更新：' + item.updatedAt : '';
         const registrantStr = item.registrantName ? item.registrantName : '—';
         return `
@@ -766,7 +1220,7 @@
         return `
           <div class="process-block" style="margin-bottom:0.5rem;">
             <div style="font-size:15px;font-weight:500;margin-bottom:0.5rem;color:#cdd6f4;">
-              工程${i+1}${p.name ? '　／　' + p.name : ''}
+              工程${i + 1}${p.name ? '　／　' + p.name : ''}
             </div>
             <div style="font-size:14px;color:#a6adc8;line-height:2;">
               作業者数：${p.workers}人　／　作業時間：${p.hours}h　／　基本賃金：${p.wage}円/h
@@ -784,7 +1238,7 @@
           const pct = baseQty > 0 ? ((fp.qty / baseQty) * 100).toFixed(1) : '—';
           return `
             <tr>
-              <td>${fp.name || '完成品' + (i+1)}</td>
+              <td>${fp.name || '完成品' + (i + 1)}</td>
               <td>${fp.qty} kg</td>
               <td class="fp-rate-pct">${pct}%</td>
             </tr>`;
@@ -856,7 +1310,7 @@
         } else {
           alert('削除に失敗しました：' + result.error);
         }
-      } catch(e) {
+      } catch (e) {
         alert('通信エラーが発生しました');
       }
     }
@@ -873,4 +1327,5 @@
   </script>
 
 </body>
+
 </html>
