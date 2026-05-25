@@ -949,6 +949,7 @@
         const h = parseFloat(document.getElementById('hours-' + id)?.value);
         const wg = parseFloat(document.getElementById('wage-' + id)?.value);
         const costEl = document.getElementById('cost-' + id);
+        if (!costEl) return;
         if (!isNaN(w) && w > 0 && !isNaN(h) && h > 0 && !isNaN(wg) && wg > 0 && !isNaN(baseQty) && baseQty > 0) {
           const cost = (w * h * wg) / baseQty;
           costEl.textContent = cost.toFixed(2) + ' 円/kg';
